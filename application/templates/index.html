@@ -11,11 +11,14 @@
 		Created by Fabliha Hossain :) 
 	</p>
 	<h3>
-			{% for user in users %}
-			<p> User: {{user.user_id}}</p>
-			<p> {{user.firstname}}</p>
-			<p> {{user.lastname}}</p>
-			<p> {{user.username}}</p>
+			{% for album in albums %}
+			<p> Album: {{album.album_id}}</p>
+			<p> {{album.name}}</p>
+			<p> {{album.description}}</p>
+
+			{% for image in img %}
+			 <img src="url_for{{image}}"/>
+			{% endfor %}
 			<br>
 			{% endfor %}
 	</h3>
