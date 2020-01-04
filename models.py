@@ -2,7 +2,7 @@
 import flask
 from application import db
 from mongoengine import Document
-from mongoengine import ListField, FileField, EmbeddedDocument, EmbeddedDocumentField
+from mongoengine import ListField, FileField, EmbeddedDocument, EmbeddedDocumentField, StringField
 
 class Users(db.Document):
 	user_id = db.IntField(unique = True)
@@ -11,12 +11,10 @@ class Users(db.Document):
 	username = db.StringField(max_length = 50)
 	password = db.StringField(max_length = 50)
 
-class AlbumImage(EmbeddedDocument):
-	image = FileField()
-
 class Albums(db.Document):
 	album_id = db.IntField(unique = True)
 	name = db.StringField(max_length = 50)
 	description = db.StringField(max_length = 100)
-	images = ListField(EmbeddedDocumentField(AlbumImage))
+	# Array of names of Image Files
+	images = ListField(StringField(max_length = 200))
 	
