@@ -10,16 +10,23 @@
 	<p>
 		Created by Fabliha Hossain :) 
 	</p>
+
 	<h3>
-			{% for album in albums %}
+		{% for user in users %}
+			<p> User: {{user.user_id}}</p>
+			<p> {{user.firstname}}</p>
+			<p> {{user.lastname}}</p>
+			{% endfor %}
+	</h3>
+	<h3>
+ 			{% for album in albums %}
 			<p> Album: {{album.album_id}}</p>
 			<p> {{album.name}}</p>
 			<p> {{album.description}}</p>
 
 			{% for image in img %}
-			 <img src="url_for{{image}}"/>
+			 <img src="{{image}}" height= "350" width = "350" />
 			{% endfor %}
-			<br>
 			{% endfor %}
 	</h3>
 
