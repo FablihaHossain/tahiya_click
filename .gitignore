@@ -1,4 +1,8 @@
+# Flask Environment
 venv/
 config.*
 *.pyc
 *.env
+
+# Images Folder (with images for database)
+application/static/images/
