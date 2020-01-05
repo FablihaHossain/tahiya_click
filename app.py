@@ -1,9 +1,6 @@
-# Initializing Flask App
-# from flask import Flask
-# from flask_mongoengine import MongoEngine
-# from config import Config
 from application import app, db
-from flask import render_template
+from config import Config
+from flask import render_template, session
 from models import Users, Albums 
 
 # app = Flask(__name__)
@@ -15,8 +12,15 @@ from models import Users, Albums
 # Defining Basic route
 @app.route("/")
 def index():
-	#img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
-	#Albums(album_id = 1, name = "Nature Pictures", description = "Inspirational Pictures of Natural Environment", images = img).save()
+	return render_template("index.html")
+
+@app.route("/albums")
+def albums():
+	# img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
+	# Albums(album_id = 1, name = "Nature Pictures", description = "Inspirational Pictures of Natural Environment", images = img).save()
+
+	# currentAlbum = Albums.objects(album_id =1)
+	# currentAlbum.update(description = "Enjoying The Great Outdoors")
 
 	# Getting all users in db
 	users_list = Users.objects.all()
@@ -28,4 +32,4 @@ def index():
 		for imgs in album.images:
 			images.append(imgs)
 
-	return render_template("index.html", users = users_list, albums = albums_list, img = images)
+	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images)
