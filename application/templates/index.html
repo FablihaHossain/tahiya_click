@@ -9,13 +9,32 @@
 
 			<link rel = "stylesheet" href="{{url_for('static', filename = 'stylesheet.css')}}">
 			{% endblock styles %}
+		{# Navigation Bar #}
+			<nav class="navbar navbar-expand-lg">
+				<a class = "navbar-brand" href="{{url_for('index')}}">Tahiya Click</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    			<span class="navbar-toggler-icon"></span>
+  			</button>
+				<div class= "collapse navbar-collapse" id="navbarNav">
+					<li class = "nav-item" >
+						<a class = "nav-link" href="{{url_for('about')}}"> About </a>
+					</li>
+					<li class = "nav-item">
+						<a class = "nav-link" href="{{url_for('albums')}}"> My Albums </a>						
+					</li>
+					<li class = "nav-item">
+						<a class = "nav-link" href="#"> Log Out</a>
+					</li>
+				</div>
+			</nav>
 		{% endblock head%}
 	</head>
 		<body>
 		{% block body %}
-			<div id="body-html body-size">{% block content %}
-				{% endblock %}
-			</div>
+			<div id="body-html body-size">{% block content %} {% endblock %}</div>
+			<h3 class = "text-center" style = "font: Verdana">
+				Created by Fabliha Hossain
+			</h3>
 		{% endblock body %}
 	</body>
 </html>
