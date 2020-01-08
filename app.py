@@ -14,6 +14,10 @@ from models import Users, Albums
 def index():
 	return render_template("index.html")
 
+@app.route("/about")
+def about():
+	return render_template("about.html")
+
 @app.route("/albums")
 def albums():
 	# img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
