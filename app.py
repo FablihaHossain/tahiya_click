@@ -26,6 +26,10 @@ def albums():
 	# currentAlbum = Albums.objects(album_id =1)
 	# currentAlbum.update(description = "Enjoying The Great Outdoors")
 
+	# Removing from table
+	removeUser = Users.objects(user_id = 2)
+	removeUser.delete()
+
 	# Getting all users in db
 	users_list = Users.objects.all()
 
