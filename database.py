@@ -26,6 +26,26 @@ class Database():
 		if not exists:
 			newUser.save()
 
-# cursor = mongo.db.measurements.find().sort([('timestamp', -1)]).limit(1)
+	# insert_album: This function creates a new album in the database
+	def insert_album(name, description, owner_id, img):
+		# Getting list of current albums in the database
+		Albums_list = Albums.objects.all()
 
+		# Getting the last album_id in the table
+		lastAlbumID = Albums.objects.count()
+
+		# Generating new ID for new album
+		nextID = lastAlbumID + 1
+
+		# Creating new album with given data
+		newAlbum = Albums(album_id = nextID, name = name, description = description, owner_id = owner_id, images = img)
 		
+		# Checking to see if album already exists in the database with given name and owner id
+		exists = False
+		for album in Albums_list:
+			if album.name == name and album.owner_id == owner_id:
+				exists = True
+
+		# Adding new album to the database if it doesn't already exist
+		if not exists:
+			newAlbum.save()
