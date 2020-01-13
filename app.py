@@ -38,6 +38,10 @@ def albums():
 	# Getting all users in db
 	users_list = Users.objects.all()
 
+	# Testing insert albums function
+	pics = ["static/images/IMG_1234.jpg", "static/images/IMG_3835.JPG"]
+	Database.insert_album("Chicago Adventure", "Some photos I took in Chicago during the Summer of 2019", 1, pics)
+
 	# Getting all albums in db
 	albums_list = Albums.objects.all()
 	images = []
