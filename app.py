@@ -1,7 +1,8 @@
 from application import app, db
 from config import Config
 from flask import render_template, session
-from models import Users, Albums 
+from models import Users, Albums
+from database import Database
 
 # app = Flask(__name__)
 # app.config.from_object(Config)
@@ -27,8 +28,12 @@ def albums():
 	# currentAlbum.update(description = "Enjoying The Great Outdoors")
 
 	# Removing from table
-	removeUser = Users.objects(user_id = 2)
-	removeUser.delete()
+	# removeUser = Users.objects(user_id = 2)
+	# removeUser.delete()
+
+
+	# Testing insert users function
+	Database.insert_user("John", "Smith", "jsmith@gmail.com", "jsmith", "mystery", "general user")
 
 	# Getting all users in db
 	users_list = Users.objects.all()
