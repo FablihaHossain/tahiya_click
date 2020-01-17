@@ -17,6 +17,10 @@ def index():
 	# Testing update function for user
 	Database.update_db("users", "user_id", 3, "lastname", "Sommerville")
 
+	# Testing deletion
+	Database.insert_user("Jake", "Murry", "jmurry@gmail.com", "jmurry", "sfhsffs", "general user")
+
+	Database.delete_db("users", "user_id", 4)
 	# Getting all users in db
 	users_list = Users.objects.all()
 
