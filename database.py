@@ -86,7 +86,15 @@ class Database():
 # Credit to http://docs.mongoengine.org/tutorial.html
 
 	# Delete_db: Delete a particular row from database
-	#def delete_db()
+	def delete_db(tableName, pkColumn, pk): 
+		if(tableName == "users" and pkColumn == "user_id"):
+			removeUser = Users.objects(user_id = pk)
+			removeUser.delete()
+		elif(tableName == "albums" and pkColumn == "album_id"):
+			removeAlbum = Albums.objects(album_id = pk)
+			removeAlbum.delete()
+		else:
+			return "Error... Wrong Table Given"
 
 
 	# Function that checks for duplicates before inserting or updating certain types of data
