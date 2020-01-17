@@ -53,16 +53,23 @@ class Database():
 	# Update_db: Update a row in the database
 	# Using the primary key column and value to get the particular row
 	def update_db(tableName, pkColumn, pk, columnName, newValue):
-		if tableName == "albums":
+		if tableName == "albums" and pkColumn == "album_id":
 			# Getting the row
-			intendedAlbum = Albums.objects(pkColumn == pk)
+			intendedAlbum = Albums.objects(album_id = pk)
 			# Updating the row
-			intendedAlbum.update(columnName = newValue)
-		elif tableName == "users":
+			if(columnName == "title"):
+				intendedAlbum.update(set__title = newValue)
+			elif(columnName == "description"):
+				intendedAlbum.update(set__description = newValue)
+			elif(columnName == "images"):
+				intendedAlbum.update(set__images = newValue)
+			else:
+				return "Error... Column Name not found"
+		elif tableName == "users" and pkColumn == "user_id":
 			# Getting the row
-			intendedUser = Users.objects(pkColumn == pk)
+			intendedUser = Users.objects(user_id = pk)
 			# Updaing the row
-			intendedUser.update_one(columnName = newValue)
+			intendedUser.update(columnName = newValue)
 		else:
 			return "Error... Wrong table given"
 
