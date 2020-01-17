@@ -12,8 +12,15 @@ from database import Database
 
 # Defining Basic route
 @app.route("/")
+
 def index():
-	return render_template("index.html")
+	# Testing update function for user
+	Database.update_db("users", "user_id", 3, "lastname", "Sommerville")
+
+	# Getting all users in db
+	users_list = Users.objects.all()
+
+	return render_template("index.html", users = users_list)
 
 @app.route("/about")
 def about():
@@ -44,7 +51,7 @@ def albums():
 
 
 	# Testing Update function in db
-	Database.update_db("albums", "album_id", 2, "description", "Chicago Weekend 2019")
+	#Database.update_db("albums", "album_id", 2, "description", "Chicago Weekend 2019")
 	#intendedAlbum = Albums.objects(album_id = 2)
 	#intendedAlbum.update(set__description = "Weekend in Chicago")
 	#intendedAlbum.description = "Nature Pictures"
