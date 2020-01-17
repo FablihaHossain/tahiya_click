@@ -1,12 +1,37 @@
 from application import db
 from models import Users, Albums
 
+# Getting List of current users in the database
+Users_list = Users.objects.all()
+
+# Getting list of current albums in the database
+Albums_list = Albums.objects.all()
+
+# Function that checks for duplicates before inserting or updating certain types of data
+# returns either true if the value of the column name exists at given table, false otherwise
+def check_duplicate_user(columnName, value):
+	# Initial value of false
+	exists = False
+	# Parsing through users table
+	for user in Users_list:
+		# Emails and Usernames cannot be the same for two users
+		if(columnName == "email" and user.email == value):
+			exists = True
+		elif(columnName == "username" and user.username == value):
+			exists = True
+	return exists
+
+def check_duplicate_album(nameValue, owner_idValue):
+	# Parsing through the albums table
+	for album in Albums_list:
+		# Checking to see if Album owner already has an album with same name
+		if(album.name == nameValue and album.owner_id == owner_idValue):
+			exists = True
+	return exists
+
 class Database():
 	# insert_user: This function will insert data to the Users table
 	def insert_user(fname, lname, email, user, pw, role):
-		# Getting List of current users in the database
-		Users_list = Users.objects.all()
-
 		# Getting the last user_id in the table
 		lastUserID = Users.objects.count()
 
@@ -17,10 +42,7 @@ class Database():
 		newUser = Users(user_id = newId, firstname = fname, lastname = lname, email = email, username = user, password = pw, role = role)
 
 		# Checks to see if new user currently exists in the database with given email address
-		exists = False
-		for user in Users_list:
-			if user.email == newUser.email:  
-				exists = True
+		exists = check_duplicate_user("email", email)
 
 		# If user doesn't exist in the database, it is finally inserted into the users table
 		if not exists:
@@ -28,9 +50,6 @@ class Database():
 
 	# insert_album: This function creates a new album in the database
 	def insert_album(name, description, owner_id, img):
-		# Getting list of current albums in the database
-		Albums_list = Albums.objects.all()
-
 		# Getting the last album_id in the table
 		lastAlbumID = Albums.objects.count()
 
@@ -41,10 +60,7 @@ class Database():
 		newAlbum = Albums(album_id = nextID, name = name, description = description, owner_id = owner_id, images = img)
 		
 		# Checking to see if album already exists in the database with given name and owner id
-		exists = False
-		for album in Albums_list:
-			if album.name == name and album.owner_id == owner_id:
-				exists = True
+		exists = check_duplicate_album(name, owner_id)
 
 		# Adding new album to the database if it doesn't already exist
 		if not exists:
@@ -57,8 +73,8 @@ class Database():
 			# Getting the row
 			intendedAlbum = Albums.objects(album_id = pk)
 			# Updating the row
-			if(columnName == "title"):
-				intendedAlbum.update(set__title = newValue)
+			if(columnName == "name"):
+				intendedAlbum.update(set__name = newValue)
 			elif(columnName == "description"):
 				intendedAlbum.update(set__description = newValue)
 			elif(columnName == "images"):
@@ -74,9 +90,15 @@ class Database():
 			elif(columnName == "lastname"):
 				intendedUser.update(set__lastname = newValue)
 			elif(columnName == "email"):
-				intendedUser.update(set__email = newValue)
+				# Checks if email already exists in database
+				exists = check_duplicate_user("email", newValue)
+				if not exists:
+					intendedUser.update(set__email = newValue)
 			elif(columnName == "username"):
-				intendedUser.update(set__username = newValue)
+				# Checks if username already exists in database
+				exists = check_duplicate_user("username", newValue)
+				if not exists:
+					intendedUser.update(set__username = newValue)
 			elif(columnName == "password"):
 				intendedUser.update(set__password = newValue)
 			else:
@@ -95,9 +117,4 @@ class Database():
 			removeAlbum.delete()
 		else:
 			return "Error... Wrong Table Given"
-
-
-	# Function that checks for duplicates before inserting or updating certain types of data
-	# returns either true or false
-	#def check_duplicate():
 
