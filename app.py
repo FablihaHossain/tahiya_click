@@ -42,6 +42,14 @@ def albums():
 	pics = ["static/images/IMG_1234.jpg", "static/images/IMG_3835.JPG"]
 	Database.insert_album("Chicago Adventure", "Some photos I took in Chicago during the Summer of 2019", 1, pics)
 
+
+	# Testing Update function in db
+	Database.update_db("albums", "album_id", 2, "description", "Summer of 2019 Photos of Chicago")
+	# columnName = 'description'
+	# newValue = "Summer of 2019 Photos of Chicago"
+	# intendedAlbum = Albums.objects("album_id" == 2)
+	# intendedAlbum.modify(description = newValue)
+
 	# Getting all albums in db
 	albums_list = Albums.objects.all()
 	images = []
