@@ -49,3 +49,22 @@ class Database():
 		# Adding new album to the database if it doesn't already exist
 		if not exists:
 			newAlbum.save()
+
+	# Update_db: Update a row in the database
+	# Using the primary key column and value to get the particular row
+	def update_db(tableName, pkColumn, pk, columnName, newValue):
+		if tableName == "albums":
+			# Getting the row
+			intendedAlbum = Albums.objects(pkColumn == pk)
+			# Updating the row
+			intendedAlbum.update(columnName = newValue)
+		elif tableName == "users":
+			# Getting the row
+			intendedUser = Users.objects(pkColumn == pk)
+			# Updaing the row
+			intendedUser.update_one(columnName = newValue)
+		else:
+			return "Error... Wrong table given"
+
+	# Delete_db: Delete a particular row from database
+	#def delete_db()
