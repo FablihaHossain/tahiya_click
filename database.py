@@ -72,6 +72,7 @@ class Database():
 			intendedUser.update(columnName = newValue)
 		else:
 			return "Error... Wrong table given"
+# Credit to http://docs.mongoengine.org/tutorial.html
 
 	# Delete_db: Delete a particular row from database
 	#def delete_db()
