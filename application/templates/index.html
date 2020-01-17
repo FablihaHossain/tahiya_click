@@ -35,6 +35,12 @@
 			<h3 class = "text-center" style = "font: Verdana">
 				Created by Fabliha Hossain
 			</h3>
+
+						{% for user in users %}
+						<p> Name: {{user.firstname}} {{user.lastname}}</p>
+						<p> Email: {{user.email}}</p>
+						<p> Username: {{user.username}}</p>
+						{% endfor %}
 		{% endblock body %}
 	</body>
 </html>
