@@ -44,11 +44,11 @@ def albums():
 
 
 	# Testing Update function in db
-	Database.update_db("albums", "album_id", 2, "description", "Summer of 2019 Photos of Chicago")
-	# columnName = 'description'
-	# newValue = "Summer of 2019 Photos of Chicago"
-	# intendedAlbum = Albums.objects("album_id" == 2)
-	# intendedAlbum.modify(description = newValue)
+	Database.update_db("albums", "album_id", 2, "description", "Chicago Weekend 2019")
+	#intendedAlbum = Albums.objects(album_id = 2)
+	#intendedAlbum.update(set__description = "Weekend in Chicago")
+	#intendedAlbum.description = "Nature Pictures"
+	#intendedAlbum.save()
 
 	# Getting all albums in db
 	albums_list = Albums.objects.all()
