@@ -69,10 +69,27 @@ class Database():
 			# Getting the row
 			intendedUser = Users.objects(user_id = pk)
 			# Updaing the row
-			intendedUser.update(columnName = newValue)
+			if(columnName == "firstname"):
+				intendedUser.update(set__firstname = newValue)
+			elif(columnName == "lastname"):
+				intendedUser.update(set__lastname = newValue)
+			elif(columnName == "email"):
+				intendedUser.update(set__email = newValue)
+			elif(columnName == "username"):
+				intendedUser.update(set__username = newValue)
+			elif(columnName == "password"):
+				intendedUser.update(set__password = newValue)
+			else:
+				return "Error... Column Name not found"
 		else:
-			return "Error... Wrong table given"
+			return "Error... Wrong table or Primary Key given"
 # Credit to http://docs.mongoengine.org/tutorial.html
 
 	# Delete_db: Delete a particular row from database
 	#def delete_db()
+
+
+	# Function that checks for duplicates before inserting or updating certain types of data
+	# returns either true or false
+	#def check_duplicate():
+
