@@ -41,11 +41,12 @@ class Database():
 		# Creating new user with given data
 		newUser = Users(user_id = newId, firstname = fname, lastname = lname, email = email, username = user, password = pw, role = role)
 
-		# Checks to see if new user currently exists in the database with given email address
-		exists = check_duplicate_user("email", email)
+		# Checks to see if new user currently exists in the database with given email address and username
+		email_exists = check_duplicate_user("email", email)
+		username_exists = check_duplicate_user("username", user)
 
 		# If user doesn't exist in the database, it is finally inserted into the users table
-		if not exists:
+		if not email_exists and not username_exists:
 			newUser.save()
 
 	# insert_album: This function creates a new album in the database
