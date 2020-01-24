@@ -10,9 +10,13 @@ from database import Database
 # db = MongoEngine()
 # db.init_app(app)
 
+# Login Route
+@app.route("/login")
+def login():
+	return render_template("login.html")
+
 # Defining Basic route
 @app.route("/")
-
 def index():
 	# Testing update function for user
 	Database.update_db("users", "user_id", 3, "username", "jsommerville")
