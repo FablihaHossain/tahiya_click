@@ -35,3 +35,24 @@
 	font-size: 2rem;
 }
 
+.jumbotron{
+	background-color: transparent;
+	padding:4rem 35rem;
+	height:auto;
+}
+
+.btn-primary{
+	background-color:#a70101e8;
+	color:white;
+	width:150px; 
+	align-items: center;
+}
+
+.btn-primary-block:hover{
+	background-color: #a70101ad;
+}
+
+.login-words{
+	font-size: 1rem;
+	padding-bottom: 15px;
+}
