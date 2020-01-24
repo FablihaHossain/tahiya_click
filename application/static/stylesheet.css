@@ -1,9 +1,9 @@
 .body-html{
 	font-family: Noto Sans, sans-serif;
-	background-color:  #ff8080;
+	background-color:white;
 	margin:0px;
 	padding: 0px;
-	color: #f2f2f2;
+	color: black;
 
 }
 
@@ -20,12 +20,15 @@
 	height: 55px;
 	width: auto;
 	list-style: none;
-	background-color: #ffe6e6;
+	background-color:#a70101e8;
 }
 
 .nav-words{
-	color: #c32232;
+	color: black;
     text-decoration: none;
+}
+.navbar-text:hover{
+	color: white;
 }
 
 .about-words{
