@@ -1,6 +1,6 @@
 from application import app, db
 from config import Config
-from flask import render_template, session
+from flask import render_template, session, request, flash
 from models import Users, Albums
 from database import Database
 
@@ -11,8 +11,18 @@ from database import Database
 # db.init_app(app)
 
 # Login Route
-@app.route("/login")
+@app.route("/login", methods = ['GET', 'POST'])
 def login():
+	# Getting the username and password entered
+	if request.method == 'POST':
+		if request.form['username'] is "" or request.form['password'] is "":
+			flash("Error! Fields cannot be empty!")
+		else:
+			# Getting the username and password entered
+			username = request.form['username']
+			password = request.form['password']
+
+			flash("You entered {} and {}".format(username, password))
 	return render_template("login.html")
 
 # Defining Basic route
