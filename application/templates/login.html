@@ -3,6 +3,18 @@
 {% block title %} <title> Login Page </title> {% endblock title %}
 
 {% block body %}
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<ul class = flashes>
+						{% for message in messages %}
+						<div class = "alert">
+							<p> {{message}}</p>
+						</div>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				{% endwith %}
+
 <body>
 	<div class = "jumbotron">
 		<div class = "container text-center login-words"> Please Log Into Your Account </div>
@@ -24,3 +36,4 @@
 {% endblock body %}
 
 <!-- credit to https://stackoverflow.com/questions/45129385/how-to-center-a-button-in-bootstraps-jumbotron-->
+<!--Credit to https://flask.palletsprojects.com/en/1.1.x/patterns/flashing/-->
