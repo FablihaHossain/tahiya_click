@@ -22,9 +22,16 @@
 					<li class = "nav-item">
 						<a class = "nav-link nav-words navbar-text" href="{{url_for('albums')}}"> My Albums </a>						
 					</li>
+					{% if not session['username']%}
 					<li class = "nav-item">
 						<a class = "nav-link nav-words navbar-text" href="{{url_for('login')}}"> Log In</a>
 					</li>
+					{% endif %}
+					{% if session['username'] %}
+					<li class = "nav-item">
+						<a class = "nav-link nav-words navbar-text" href="{{url_for('logout')}}"> Log Out</a>
+					</li>
+					{% endif %}
 				</div>
 			</nav>
 		{% endblock head%}
@@ -36,11 +43,11 @@
 				Created by Fabliha Hossain
 			</h3>
 
-						{% for user in users %}
+						<!-- {% for user in users %}
 						<p> Name: {{user.firstname}} {{user.lastname}}</p>
 						<p> Email: {{user.email}}</p>
 						<p> Username: {{user.username}}</p>
-						{% endfor %}
+						{% endfor %} -->
 		{% endblock body %}
 	</body>
 </html>
