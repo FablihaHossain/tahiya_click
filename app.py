@@ -25,6 +25,7 @@ def login():
 			# Checking if correct credentials were given
 			valid_user = Database.check_user(username, password)
 
+			# Creating a session in order to continue with the application
 			if valid_user is True:
 				session['username'] = username
 				return redirect(url_for('albums'))
