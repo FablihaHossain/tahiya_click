@@ -37,7 +37,7 @@
 
 .jumbotron{
 	background-color: transparent;
-	padding:4rem 25rem;
+	padding:4rem 33rem;
 	height:auto;
 }
 
@@ -68,4 +68,11 @@
     height: 55px;
     padding-right: 30px;
     padding-left: 20px;
+}
+
+.jumbotron-register{	
+	background-color: transparent;
+	padding:4rem 25rem;
+	height:auto;
+	font-size: 1rem;
 }
