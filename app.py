@@ -39,6 +39,10 @@ def logout():
 	flash("You have logged out successfully")
 	return redirect(url_for('login'))
 
+@app.route("/register")
+def register():
+	return render_template("register.html")
+
 # Defining Basic route
 @app.route("/")
 def index():
