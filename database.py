@@ -119,3 +119,15 @@ class Database():
 		else:
 			return "Error... Wrong Table Given"
 
+	# Check Log In Function
+	# Returns True if the username and password correspond, false otherwise
+	def check_user(username, password):
+		# initially invalid log in
+		valid = False
+
+		# Going through all users in the database
+		for user in Users_list:
+			if user.username == username and user.password == password:
+				valid = True
+
+		return valid
