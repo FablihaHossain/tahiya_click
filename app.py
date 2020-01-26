@@ -39,8 +39,24 @@ def logout():
 	flash("You have logged out successfully")
 	return redirect(url_for('login'))
 
-@app.route("/register")
+@app.route("/register", methods = ['GET', 'POST'])
 def register():
+	if session.get('username'):
+		return redirect(url_for('login'))
+
+	if request.method == 'POST':
+		# Getting all the information
+		firstname = request.form['firstname']
+		lastname = request.form['lastname']
+		email = request.form['email']
+		username = request.form['username']
+		password = request.form['password']
+
+		# Ensuring that all fields are filled in
+		if "" in [firstname, lastname, email, username, password]:
+			flash("Error! One or more fields is empty! Please fill in ALL the fields")
+		else:
+			flash("Good... on to the next thing ;)")
 	return render_template("register.html")
 
 # Defining Basic route
