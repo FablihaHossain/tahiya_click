@@ -1,6 +1,6 @@
 from application import app, db
 from config import Config
-from flask import render_template, session, request, flash
+from flask import render_template, session, request, flash, redirect, url_for
 from models import Users, Albums
 from database import Database
 
@@ -22,8 +22,21 @@ def login():
 			username = request.form['username']
 			password = request.form['password']
 
-			flash("You entered {} and {}".format(username, password))
+			# Checking if correct credentials were given
+			valid_user = Database.check_user(username, password)
+
+			if valid_user is True:
+				session['username'] = username
+				return redirect(url_for('albums'))
+			else:
+				flash("Incorrect login. Please Try Again")
 	return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+	session.pop('username', None)
+	flash("You have logged out successfully")
+	return redirect(url_for('login'))
 
 # Defining Basic route
 @app.route("/")
@@ -46,6 +59,8 @@ def about():
 
 @app.route("/albums")
 def albums():
+	if not session.get('username'):
+		return redirect(url_for('login'))
 	# img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
 	# Albums(album_id = 1, name = "Nature Pictures", description = "Inspirational Pictures of Natural Environment", images = img).save()
 
