@@ -22,6 +22,11 @@
 					<li class = "nav-item">
 						<a class = "nav-link nav-words navbar-text" href="{{url_for('albums')}}"> My Albums </a>						
 					</li>
+					{% if not session['username'] %}
+					<li class = "nav-item">
+						<a class = "nav-link nav-words navbar-text" href="{{url_for('register')}}"> Register</a>
+					</li>
+					{% endif %}
 					{% if not session['username']%}
 					<li class = "nav-item">
 						<a class = "nav-link nav-words navbar-text" href="{{url_for('login')}}"> Log In</a>
