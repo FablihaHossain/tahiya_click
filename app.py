@@ -30,7 +30,7 @@ def login():
 				session['username'] = username
 				return redirect(url_for('albums'))
 			else:
-				flash("Incorrect login. Please Try Again")
+				flash("Incorrect login. Please Try Again.")
 	return render_template("login.html")
 
 @app.route("/logout")
@@ -42,7 +42,7 @@ def logout():
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
 	if session.get('username'):
-		return redirect(url_for('login'))
+		return redirect(url_for('blogs'))
 
 	if request.method == 'POST':
 		# Getting all the information
@@ -56,7 +56,22 @@ def register():
 		if "" in [firstname, lastname, email, username, password]:
 			flash("Error! One or more fields is empty! Please fill in ALL the fields")
 		else:
-			flash("Good... on to the next thing ;)")
+			# Checking if email address already exists
+			email_exist = Database.check_duplicate_user("email", email)
+
+			# Checking if username already exists
+			username_exist = Database.check_duplicate_user("username", username)
+
+			# If email or username is already in db, a warning message is given
+			if email_exist is True:
+				flash("Error! Email Address already taken! Please Try Another One")
+			elif username_exist is True:
+				flash("Error! Username already exists. Please Try Another One")
+			else:
+				# Adding the user to database
+				Database.insert_user(firstname, lastname, email, username, password, "general user")
+				flash("Congradulations! You've been registered!")
+				return redirect(url_for('albums'))
 	return render_template("register.html")
 
 # Defining Basic route
