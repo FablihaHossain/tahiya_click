@@ -2,7 +2,75 @@
 {% block title %} <title> Home Page </title> {% endblock title %}
 
 {% block body %}
-<div class = "body-html body-size">
+		<div class = "body-html body-size">
+		{% for album in albums %}
+		<p> Album {{album.album_id}}</p>
+		<div class="card mb-3" style="max-width: 540px;">
+		  <div class="row no-gutters">
+		    <div class="col-md-4">
+		    {% for image in coverImages %}
+		    	{% if image in album.images %}
+		      		<img src="{{image}}" height= "200" width = "400" class="card-img" alt="...">
+		      	{% endif %}
+		     {% endfor %}
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">{{album.name}}</h5>
+		        <p class="card-text">{{album.description}}</p>
+		        {% for user in users %}
+			        {% if album.owner_id == user.user_id %}
+				        <p class="card-text"><small class="text-muted"> Owner: {{user.firstname}} {{user.lastname}}</small></p>
+			        {% endif %}
+		        {% endfor %}
+		      </div>
+		      <div class = "text-center">
+		      <a href="#" class="btn btn-primary btn-primary-block">Check It Out!</a>
+		  </div>
+		    </div>
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
+
+
+
+<!-- 	<div class = "body-html body-size">
+		{% for album in albums %}
+		<p> Album {{album.album_id}}</p>
+		<div class="card mb-3" style="max-width: 540px;">
+		  <div class="row no-gutters">
+		    <div class="col-md-4">
+		    {% set imageSet = False %}
+		    {% for image in img %}
+		     <p> Before imageSet is {{imageSet}}</p>
+		    	{% if (imageSet == False) and (image in album.images) %}
+		      		<img src="{{image}}" class="card-img" alt="...">
+		      		{% set imageSet = True %}
+		      		<p> After imageSet is {{imageSet}}</p>
+		      	{% endif %}
+		      	<p> dud imageSet is {{imageSet}}</p>
+		     {% endfor %}
+		     <p> {{imageSet}}</p>
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">{{album.name}}</h5>
+		        <p class="card-text">{{album.description}}</p>
+		        {% for user in users %}
+			        {% if album.owner_id == user.user_id %}
+				        <p class="card-text"><small class="text-muted">{{user.firstname}} {{user.lastname}}</small></p>
+			        {% endif %}
+		        {% endfor %}
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		{% endfor %}
+	</div> -->
+
+
+<!-- <div class = "body-html body-size">
 	<div class = "container text-center">
 	<h3>
  			{% for album in albums %}
@@ -21,7 +89,7 @@
 		Created by Fabliha Hossain :) 
 	</p>
 	</div>
-</div>
+</div> -->
 
 {# Javascript Lines from https://getbootstrap.com/docs/4.3/getting-started/introduction/ #}
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
