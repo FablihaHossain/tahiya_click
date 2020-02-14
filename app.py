@@ -100,8 +100,8 @@ def albums():
 	# img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
 	# Albums(album_id = 1, name = "Nature Pictures", description = "Inspirational Pictures of Natural Environment", images = img).save()
 
-	# currentAlbum = Albums.objects(album_id =1)
-	# currentAlbum.update(description = "Enjoying The Great Outdoors")
+	currentAlbum = Albums.objects(album_id =1)
+	currentAlbum.update(owner_id = "2")
 
 	# Removing from table
 	# removeUser = Users.objects(user_id = 2)
@@ -133,4 +133,9 @@ def albums():
 		for imgs in album.images:
 			images.append(imgs)
 
-	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images)
+	# Cover images
+	coverImages = []
+	for album in albums_list:
+		coverImages.append(album.images[0]) 
+
+	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages)
