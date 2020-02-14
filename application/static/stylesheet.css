@@ -76,3 +76,11 @@
 	height:auto;
 	font-size: 1rem;
 }
+
+.album-card{
+	max-width:40%;
+}
+
+.album-row{
+	width: 100%;
+}
