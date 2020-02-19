@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% block title %} <title> New Album Page </title> {% endblock title %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+	<ul class = flashes>
+		{% for message in messages %}
+		<div class = "alert alert-danger">
+			<p> {{message}}</p>
+		</div>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endwith %}
+	<div class = "jumbotron">
+		<div class = "container text-center login-words"> Create A New Album Entry Here! </div>
+		<form method = post>
+			<div class = "form-group row">
+				<label for = "inputAlbumName" class = "col-form-label col-sm-2"> Album Name </label>
+					<div class = "register-fields col-sm-9">
+						<input type="name" class= "form-control-plaintext" name="name" value = "{{request.form.name}}">
+					</div>
+			</div>
+
+			<div class = "form-group row">
+				<label for = "inputDescription" class = "col-form-label col-sm-2"> Album Description </label>
+					<div class = "register-fields col-sm-9">
+						<input type="description" class= "form-control-plaintext" name="description" value = "{{request.form.description}}">
+					</div>
+			</div>
+
+			<div class = "form-group row">
+				  <label for="files">Select Photos:</label>
+  				  <input type="file" id="imagefiles" name="imagefiles[]" multiple><br><br>
+			</div>
+			<div class = "text-center">
+				<button type = "submit" class = "btn btn-primary btn-primary-block text-center"> Add Album </button>
+			</div>
+<!-- 
+			<div class = "form-group row">
+				<label for = "inputLastName" class = "col-form-label col-sm-2"> Last Name </label>
+					<div class = "register-fields col-sm-9">
+						<input type="lastname" class= "form-control-plaintext" name="lastname" value = "{{request.form.lastname}}">
+					</div>
+			</div> -->
+		</form>
+	</div>
+
+{% endblock %}
