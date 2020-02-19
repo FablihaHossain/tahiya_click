@@ -4,12 +4,6 @@ from flask import render_template, session, request, flash, redirect, url_for
 from models import Users, Albums
 from database import Database
 
-# app = Flask(__name__)
-# app.config.from_object(Config)
-
-# db = MongoEngine()
-# db.init_app(app)
-
 # Login Route
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
@@ -23,7 +17,7 @@ def login():
 			password = request.form['password']
 
 			# Checking if correct credentials were given
-			valid_user = Database.check_user(username, password)
+			valid_user = Database.validate_login(username, password)
 
 			# Creating a session in order to continue with the application
 			if valid_user is True:
@@ -42,7 +36,7 @@ def logout():
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
 	if session.get('username'):
-		return redirect(url_for('blogs'))
+		return redirect(url_for('albums'))
 
 	if request.method == 'POST':
 		# Getting all the information
@@ -77,13 +71,6 @@ def register():
 # Defining Basic route
 @app.route("/")
 def index():
-	# Testing update function for user
-	Database.update_db("users", "user_id", 3, "username", "jsommerville")
-
-	# Testing deletion
-	Database.insert_user("Jake", "Murry", "jmurry@gmail.com", "jmurry", "sfhsffs", "general user")
-
-	#Database.delete_db("users", "user_id", 4)
 	# Getting all users in db
 	users_list = Users.objects.all()
 
@@ -97,34 +84,9 @@ def about():
 def albums():
 	if not session.get('username'):
 		return redirect(url_for('login'))
-	# img = ["/static/images/IMG_4720.jpg", "/static/images/IMG_4721.jpg"]
-	# Albums(album_id = 1, name = "Nature Pictures", description = "Inspirational Pictures of Natural Environment", images = img).save()
-
-	currentAlbum = Albums.objects(album_id =1)
-	currentAlbum.update(owner_id = "2")
-
-	# Removing from table
-	# removeUser = Users.objects(user_id = 2)
-	# removeUser.delete()
-
-
-	# Testing insert users function
-	Database.insert_user("John", "Smith", "jsmith@gmail.com", "jsmith", "mystery", "general user")
 
 	# Getting all users in db
 	users_list = Users.objects.all()
-
-	# Testing insert albums function
-	pics = ["static/images/IMG_1234.jpg", "static/images/IMG_3835.JPG"]
-	Database.insert_album("Chicago Adventure", "Some photos I took in Chicago during the Summer of 2019", 1, pics)
-
-
-	# Testing Update function in db
-	#Database.update_db("albums", "album_id", 2, "description", "Chicago Weekend 2019")
-	#intendedAlbum = Albums.objects(album_id = 2)
-	#intendedAlbum.update(set__description = "Weekend in Chicago")
-	#intendedAlbum.description = "Nature Pictures"
-	#intendedAlbum.save()
 
 	# Getting all albums in db
 	albums_list = Albums.objects.all()
@@ -139,3 +101,30 @@ def albums():
 		coverImages.append(album.images[0]) 
 
 	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages)
+
+@app.route("/newAlbum", methods = ['GET', 'POST'])
+def newAlbum():
+	if not session.get('username'):
+		return redirect(url_for('login'))
+
+	if request.method == 'POST':
+		album_name = request.form['name']
+		album_description = request.form['description']
+		album_images = request.form.getlist("imagefiles[]")
+
+		if "" in [album_name, album_description]:
+			flash ("Error! One or more fields is empty! Please fill in ALL the fields")
+		else:
+			flash (album_images)
+	return render_template("addAlbum.html")
+
+@app.route("/viewAlbum/<int:albumID>", methods = ['GET', 'POST'])
+def viewAlbum(albumID):
+	if not session.get('username'):
+		return redirect(url_for('login'))
+
+	# Getting all the information for given album id
+	currentAlbum = Database.get_album(albumID)
+
+	return render_template("viewAlbum.html", album = currentAlbum)
+
