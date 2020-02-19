@@ -121,7 +121,7 @@ class Database():
 
 	# Check Log In Function to validate the user 
 	# Returns True if the username and password correspond, false otherwise
-	def check_user(username, password):
+	def validate_login(username, password):
 		# initially invalid log in
 		valid = False
 
@@ -131,3 +131,9 @@ class Database():
 				valid = True
 
 		return valid
+
+	# Function to get the album data given an album ID
+	def get_album(albumID):
+		for album in Albums_list:
+			if album.album_id == albumID:
+				return album
