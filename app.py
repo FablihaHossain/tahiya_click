@@ -1,4 +1,6 @@
+import os
 from application import app, db
+from werkzeug import secure_filename
 from config import Config
 from flask import render_template, session, request, flash, redirect, url_for
 from models import Users, Albums
@@ -102,6 +104,12 @@ def albums():
 
 	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages)
 
+# Checking if the file uploaded is the appropriate form
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route("/newAlbum", methods = ['GET', 'POST'])
 def newAlbum():
 	if not session.get('username'):
@@ -110,12 +118,32 @@ def newAlbum():
 	if request.method == 'POST':
 		album_name = request.form['name']
 		album_description = request.form['description']
-		album_images = request.form.getlist("imagefiles[]")
+		# album_images = request.form.getlist("imagefiles[]")
+		album_images = request.files.getlist("image")
+		img = []
+		uploaded_files = []
 
-		if "" in [album_name, album_description]:
+		if "" in [album_name, album_description, album_images]:
 			flash ("Error! One or more fields is empty! Please fill in ALL the fields")
 		else:
-			flash (album_images)
+			validFiles = True
+			for file in album_images:
+				if allowed_file(file.filename):
+					newFilename = "static/images/%s" % file.filename
+					img.append(newFilename)
+					uploaded_files.append(file)
+				else:
+					flash("Error! Wrong filetype")
+					validFiles = False
+					break
+			if validFiles:
+				for file in uploaded_files:
+					filename = secure_filename(file.filename)
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+				# Adding new album
+				Database.insert_album(album_name, album_description, 1, img)
+				flash("Successfully Added Album!")
+
 	return render_template("addAlbum.html")
 
 @app.route("/viewAlbum/<int:albumID>", methods = ['GET', 'POST'])
@@ -128,3 +156,4 @@ def viewAlbum(albumID):
 
 	return render_template("viewAlbum.html", album = currentAlbum)
 
+# Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
