@@ -84,3 +84,14 @@
 .album-row{
 	width: 100%;
 }
+
+.add-album-words{
+	padding-left: 0px;
+}
+
+.add-image{
+	height: 35px;
+    padding-right: 30px;
+    padding-left: 20px;
+    font-size:smaller;
+}
