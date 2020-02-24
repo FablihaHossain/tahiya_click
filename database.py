@@ -20,6 +20,8 @@ class Database():
 				exists = True
 			elif(columnName == "username" and user.username == value):
 				exists = True
+			else:
+				exists = False
 		return exists
 
 	def check_duplicate_album(nameValue, owner_idValue):
@@ -28,6 +30,8 @@ class Database():
 			# Checking to see if Album owner already has an album with same name
 			if(album.name == nameValue and album.owner_id == owner_idValue):
 				exists = True
+			else:
+				exists = False
 		return exists 
 
 	# insert_user: This function will insert data to the Users table
