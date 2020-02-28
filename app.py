@@ -129,7 +129,7 @@ def newAlbum():
 			validFiles = True
 			for file in album_images:
 				if allowed_file(file.filename):
-					newFilename = "static/images/%s" % file.filename
+					newFilename = "/static/images/%s" % file.filename
 					img.append(newFilename)
 					uploaded_files.append(file)
 				else:
@@ -154,6 +154,11 @@ def viewAlbum(albumID):
 	# Getting all the information for given album id
 	currentAlbum = Database.get_album(albumID)
 
-	return render_template("viewAlbum.html", album = currentAlbum)
+	# Getting all the images in the current album
+	images = []
+	for img in currentAlbum.images:
+		images.append(img)
+
+	return render_template("viewAlbum.html", album = currentAlbum, img = images)
 
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
