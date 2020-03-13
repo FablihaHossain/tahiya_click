@@ -141,3 +141,9 @@ class Database():
 		for album in Albums_list:
 			if album.album_id == albumID:
 				return album
+
+	# Function to get the user_id of the given username
+	def get_user_ID(username):
+		for user in Users_list:
+			if user.username == username:
+				return user.user_id
