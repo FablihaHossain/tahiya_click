@@ -11,19 +11,24 @@ from database import Database
 def login():
 	# Getting the username and password entered
 	if request.method == 'POST':
-		if request.form['username'] is "" or request.form['password'] is "":
+		if request.form['username'] == "" or request.form['password'] == "":
 			flash("Error! Fields cannot be empty!")
 		else:
 			# Getting the username and password entered
 			username = request.form['username']
 			password = request.form['password']
 
+			print("hello")
 			# Checking if correct credentials were given
 			valid_user = Database.validate_login(username, password)
 
 			# Creating a session in order to continue with the application
 			if valid_user is True:
 				session['username'] = username
+
+				# Getting the corresponding user id
+				user_id = Database.get_user_ID(username)
+				session['user_id'] = user_id
 				return redirect(url_for('albums'))
 			else:
 				flash("Incorrect login. Please Try Again.")
@@ -32,6 +37,7 @@ def login():
 @app.route("/logout")
 def logout():
 	session.pop('username', None)
+	session.pop('user_id', None)
 	flash("You have logged out successfully")
 	return redirect(url_for('login'))
 
@@ -140,8 +146,11 @@ def newAlbum():
 				for file in uploaded_files:
 					filename = secure_filename(file.filename)
 					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+				# Getting the user_id of the album creator
+				current_user_id = session.get('user_id')
 				# Adding new album
-				Database.insert_album(album_name, album_description, 1, img)
+				Database.insert_album(album_name, album_description, current_user_id, img)
 				flash("Successfully Added Album!")
 
 	return render_template("addAlbum.html")
