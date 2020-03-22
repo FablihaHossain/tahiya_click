@@ -9,6 +9,8 @@ from database import Database
 # Login Route
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
+	#db = Database.db_connection()
+
 	# Getting the username and password entered
 	if request.method == 'POST':
 		if request.form['username'] == "" or request.form['password'] == "":
@@ -18,7 +20,6 @@ def login():
 			username = request.form['username']
 			password = request.form['password']
 
-			print("hello")
 			# Checking if correct credentials were given
 			valid_user = Database.validate_login(username, password)
 
@@ -73,6 +74,7 @@ def register():
 				# Adding the user to database
 				Database.insert_user(firstname, lastname, email, username, password, "general user")
 				flash("Congradulations! You've been registered!")
+				#db = Database.db_connection()
 				return redirect(url_for('albums'))
 	return render_template("register.html")
 
