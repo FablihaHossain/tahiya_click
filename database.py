@@ -1,5 +1,7 @@
-from application import db
+from application import app, db
+from flask_mongoengine import MongoEngine
 from models import Users, Albums
+from config import Config
 
 # Getting List of current users in the database
 Users_list = Users.objects.all()
@@ -8,6 +10,12 @@ Users_list = Users.objects.all()
 Albums_list = Albums.objects.all()
 
 class Database():
+	# def db_connection():
+	# 	app.config.from_object(Config)
+	# 	db = MongoEngine()
+	# 	db.init_app(app)
+	# 	return db
+
 	# Function that checks for duplicates before inserting or updating certain types of data
 	# returns either true if the value of the column name exists at given table, false otherwise
 	def check_duplicate_user(columnName, value):
