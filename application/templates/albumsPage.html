@@ -2,6 +2,11 @@
 {% block title %} <title> Home Page </title> {% endblock title %}
 
 {% block body %}
+
+		<div class = "text-center">
+			<a href="{{url_for('newAlbum')}}" class="btn btn-primary btn-primary-block"> Add New Album! </a>
+		</div>
+		
 		<div class = "body-html body-size">
 		{% for album in albums %}
 		<p></p>
@@ -26,15 +31,12 @@
 		      </div>
 		      <div class = "text-center">
 		      <a href="{{url_for('viewAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Check It Out!</a>
+		      <a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
 		  </div>
 		    </div>
 		  </div>
 		</div>
 		{% endfor %}
-
-		<div class = "text-center">
-			<a href="{{url_for('newAlbum')}}" class="btn btn-primary btn-primary-block"> Add New Album! </a>
-		</div>
 	</div>
 
 {# Javascript Lines from https://getbootstrap.com/docs/4.3/getting-started/introduction/ #}
