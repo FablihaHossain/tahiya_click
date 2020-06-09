@@ -1,10 +1,11 @@
 .body-html{
 	font-family: Noto Sans, sans-serif;
-	background-color:white;
+	background-color:#ffb3c1;
 	margin:0px;
 	padding: 0px;
 	color: black;
-
+	height: auto;
+	position: relative;
 }
 
 .body-size {
@@ -13,7 +14,6 @@
     margin-right: 0px;
     margin-bottom: 0px;
     align-content: center;
-
 }
 
 .navbar {
@@ -38,7 +38,8 @@
 .jumbotron{
 	background-color: transparent;
 	padding:4rem 33rem;
-	height:auto;
+	position: relative;
+	height: auto;
 }
 
 .btn-primary{
@@ -70,11 +71,17 @@
     padding-left: 20px;
 }
 
+.form-control-plaintext {
+    border: 1px solid black;
+   
+}
+
 .jumbotron-register{	
 	background-color: transparent;
 	padding:4rem 25rem;
-	height:auto;
 	font-size: 1rem;
+	position: relative;
+	height: auto;
 }
 
 .album-card{
@@ -95,3 +102,8 @@
     padding-left: 20px;
     font-size:smaller;
 }
+
+/*@media screen and (max-width: 600px) {
+	.jumbotron.responsive {position: relative;}
+	.body-html.responsive {position: relative;}
+}*/
