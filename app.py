@@ -176,6 +176,9 @@ def viewAlbum(albumID):
 def updateAlbum(albumID):
 	if not session.get('username'):
 		return redirect(url_for('login'))
-	return render_template("updateAlbum.html")
+
+	# Getting the current album information based on id given
+	currentAlbum = Database.get_album(albumID)
+	return render_template("updateAlbum.html", album = currentAlbum)
 
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
