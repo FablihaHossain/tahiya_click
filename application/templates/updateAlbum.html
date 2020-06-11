@@ -2,9 +2,51 @@
 {% block title %} <title> Update Album Page </title> {% endblock title %}
 
 {% block body %}
-<h6 class="display-5">Album Name: {{album.name}}</h6>
-<h6 class="display-5">Album Description: {{album.description}}</h6>
-<h6 class="display-5">Album Owner: {{album.owner_id}}</h6>
-<h6 class="display-5">Album Images: {{album.images}}</h6>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		<ul class = flashes>
+			{% for message in messages %}
+			<div class = "alert alert-danger">
+				<p> {{message}}</p>
+			</div>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	{% endwith %}
+
+<div class = "jumbotron">
+	<div class = "container text-center login-words">
+		Update Album Details
+	</div>
+	<form method = "post" enctype=multipart/form-data>
+		<div class = "form-group row">
+			<label for ="updateAlbumName" class = "col-form-label col-sm-2 add-album-words">Album Name</label>
+			<div class = "register-fields col-sm-10">
+						<input type="name" class= "form-control" name="name" value = "{{album.name}}">
+			</div>
+		</div>
+		<div class = "form-group row">
+			<label for ="updateAlbumDescription" class = "col-form-label col-sm-2 add-album-words">Album Description</label>
+			<div class = "register-fields col-sm-10">
+				<input type="description" class= "form-control" name="description" value = "{{album.description}}">
+			</div>
+		</div>
+
+		<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos</label>
+	<div class="input-group mb-3">
+  		<div class="input-group-prepend">
+  			{% for image in img %}
+    		<div class="input-group-text">
+    			<img src="{{image}}" height= "100" width = "100"/>
+      			<input type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
+    		</div>
+    		{% endfor %}
+  		</div>
+	</div>
+			<div class = "text-center">
+				<button type = "submit" class = "btn btn-primary btn-primary-block text-center"> Update Album </button>
+			</div>
+	</form>
+</div>
 
 {% endblock %}
