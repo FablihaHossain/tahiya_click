@@ -179,6 +179,22 @@ def updateAlbum(albumID):
 
 	# Getting the current album information based on id given
 	currentAlbum = Database.get_album(albumID)
-	return render_template("updateAlbum.html", album = currentAlbum)
+
+	# Getting all the images in the current album
+	images = []
+	for img in currentAlbum.images:
+		images.append(img)
+	return render_template("updateAlbum.html", album = currentAlbum, img = images)
+
+	if request.method == 'POST':
+		print("form submitted")
+		flash("Button pressed!")
+		album_name = request.form['name']
+		album_description = request.form['description']
+		#album_images = request.files.getlist("images")
+
+		print(album_name)
+		print(album_description)
+		#print(album_images)
 
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
