@@ -58,12 +58,12 @@
 	padding-bottom: 15px;
 }
 
-.form-control-plaintext{
+/*.form-control-plaintext{
 	padding: .375rem .75rem;
 	border: 1px solid #ced4da;
     border-radius: auto;
     padding-left: 5px;
-}
+}*/
 
 .register-fields{
     height: 55px;
@@ -103,7 +103,7 @@
     font-size:smaller;
 }
 
-/*@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
 	.jumbotron.responsive {position: relative;}
 	.body-html.responsive {position: relative;}
-}*/
+}
