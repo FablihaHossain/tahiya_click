@@ -18,11 +18,11 @@
 	<div class = "container text-center login-words">
 		Update Album Details
 	</div>
-	<form method = "post" enctype=multipart/form-data>
+	<form method = post enctype=multipart/form-data>
 		<div class = "form-group row">
 			<label for ="updateAlbumName" class = "col-form-label col-sm-2 add-album-words">Album Name</label>
 			<div class = "register-fields col-sm-10">
-						<input type="name" class= "form-control" name="name" value = "{{album.name}}">
+					<input type="name" class= "form-control" name="name" value = "{{album.name}}">
 			</div>
 		</div>
 		<div class = "form-group row">
@@ -31,6 +31,13 @@
 				<input type="description" class= "form-control" name="description" value = "{{album.description}}">
 			</div>
 		</div>
+
+		<div class = "form-group row">
+				  <label for="files" class = "col-form-label col-sm-2 add-album-words">Add Photos:</label>
+				<div class = "add-image col-sm-10">
+  				  	<input type="file" id = "addImage" name="newImages" multiple><br><br>
+  				</div>
+			</div>
 
 		<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos</label>
 	<div class="input-group mb-3">
@@ -44,9 +51,37 @@
   		</div>
 	</div>
 			<div class = "text-center">
-				<button type = "submit" class = "btn btn-primary btn-primary-block text-center"> Update Album </button>
+				<button type="button" class = "btn btn-primary btn-primary-block text-center" data-toggle="modal" data-target="#updateModal"> Update Album</button>
 			</div>
+
+			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  				<div class="modal-dialog">
+   					<div class="modal-content">
+      					<div class="modal-header">
+        					<h5 class="modal-title" id="updateModalLabel">Updating Album <q>{{album.name}}</q></h5>
+        					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          						<span aria-hidden="true">&times;</span>
+        					</button>
+      					</div>
+      				<div class="modal-body">
+        					Are you sure you want to make these changes?
+      				</div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type = "submit" class="btn btn-primary btn-primary-block text-center">Save changes</button>
+				      </div>
+    				</div>
+  				</div>
+			</div>
+
+
+			<!-- <div class = "text-center">
+				<button type = "submit" class = "btn btn-primary btn-primary-block text-center"> Update Album </button>
+			</div> -->
 	</form>
 </div>
-
-{% endblock %}
+{# Javascript Lines from https://getbootstrap.com/docs/4.3/getting-started/introduction/ #}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endblock body %}
