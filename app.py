@@ -184,17 +184,57 @@ def updateAlbum(albumID):
 	images = []
 	for img in currentAlbum.images:
 		images.append(img)
+
+	# Processing the Update Form
+	if request.method == 'POST':
+		# Return redirect(url_for('albums'))
+		new_album_name = request.form['name']
+		new_album_description = request.form['description']
+		delete_image_list = request.form.getlist('images')
+		new_images_list = request.files.getlist("newImages")
+		uploaded_files = []
+
+		# Ensuring no empty fields are submitted
+		if "" in [new_album_name, new_album_description]:
+			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
+		else:
+			validFiles = True
+			for file in new_images_list:
+				if allowed_file(file.filename):
+					newFilename = "/static/images/%s" % file.filename
+					if newFilename not in images:
+						images.append(newFilename)
+						uploaded_files.append(file)
+				else:
+					flash("Error! Wrong filetype")
+					validFiles = False
+					break
+
+			# Updating the images list for deletion
+			for img in delete_image_list:
+				# Deleting Images from Album (and image folder in application)
+				img_filename = img[15:]
+				os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+				images.remove(img)
+
+
+			if validFiles:
+				for file in uploaded_files:
+					filename = secure_filename(file.filename)
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+				# Updating album name
+				Database.update_db("albums", "album_id", albumID, "name", new_album_name)
+
+				# Updating album description
+				Database.update_db("albums", "album_id", albumID, "description", new_album_description)
+
+				# Updating album images
+				Database.update_db("albums", "album_id", albumID, "images", images)
+
+				# Redirecting to album page
+				return redirect(url_for('albums'))
 	return render_template("updateAlbum.html", album = currentAlbum, img = images)
 
-	if request.method == 'POST':
-		print("form submitted")
-		flash("Button pressed!")
-		album_name = request.form['name']
-		album_description = request.form['description']
-		#album_images = request.files.getlist("images")
-
-		print(album_name)
-		print(album_description)
-		#print(album_images)
-
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
+# Credit to https://stackoverflow.com/questions/31859903/get-the-value-of-a-checkbox-in-flask
