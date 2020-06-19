@@ -3,12 +3,6 @@ from flask_mongoengine import MongoEngine
 from models import Users, Albums
 from config import Config
 
-# Getting List of current users in the database
-Users_list = Users.objects.all()
-
-# Getting list of current albums in the database
-Albums_list = Albums.objects.all()
-
 class Database():
 	# def db_connection():
 	# 	app.config.from_object(Config)
@@ -19,6 +13,9 @@ class Database():
 	# Function that checks for duplicates before inserting or updating certain types of data
 	# returns either true if the value of the column name exists at given table, false otherwise
 	def check_duplicate_user(columnName, value):
+		# Getting List of current users in the database
+		Users_list = Users.objects.all()
+		
 		# Initial value of false
 		exists = False
 		# Parsing through users table
@@ -33,6 +30,9 @@ class Database():
 		return exists
 
 	def check_duplicate_album(nameValue, owner_idValue):
+		# Getting list of current albums in the database
+		Albums_list = Albums.objects.all()
+
 		# Parsing through the albums table
 		for album in Albums_list:
 			# Checking to see if Album owner already has an album with same name
@@ -44,6 +44,9 @@ class Database():
 
 	# insert_user: This function will insert data to the Users table
 	def insert_user(fname, lname, email, user, pw, role):
+		# Getting List of current users in the database
+		Users_list = Users.objects.all()
+
 		# Getting the last user_id in the table
 		lastUserID = Users.objects.count()
 
@@ -63,6 +66,9 @@ class Database():
 
 	# insert_album: This function creates a new album in the database
 	def insert_album(name, description, owner_id, img):
+		# Getting list of current albums in the database
+		Albums_list = Albums.objects.all()
+
 		# Getting the last album_id in the table
 		lastAlbumID = Albums.objects.count()
 
@@ -93,7 +99,7 @@ class Database():
 			elif(columnName == "images"):
 				intendedAlbum.update(set__images = newValue)
 			else:
-				return "Error... Column Name not found"
+				print("Error... Column Name not found")
 		elif tableName == "users" and pkColumn == "user_id":
 			# Getting the row
 			intendedUser = Users.objects(user_id = pk)
@@ -115,9 +121,9 @@ class Database():
 			elif(columnName == "password"):
 				intendedUser.update(set__password = newValue)
 			else:
-				return "Error... Column Name not found"
+				print("Error... Column Name not found")
 		else:
-			return "Error... Wrong table or Primary Key given"
+			print("Error... Wrong table or Primary Key given")
 # Credit to http://docs.mongoengine.org/tutorial.html
 
 	# Delete_db: Delete a particular row from database
@@ -146,12 +152,18 @@ class Database():
 
 	# Function to get the album data given an album ID
 	def get_album(albumID):
+		# Getting list of current albums in the database
+		Albums_list = Albums.objects.all()
+
 		for album in Albums_list:
 			if album.album_id == albumID:
 				return album
 
 	# Function to get the user_id of the given username
 	def get_user_ID(username):
+		# Getting List of current users in the database
+		Users_list = Users.objects.all()
+
 		for user in Users_list:
 			if user.username == username:
 				return user.user_id
