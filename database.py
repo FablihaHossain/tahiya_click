@@ -15,7 +15,7 @@ class Database():
 	def check_duplicate_user(columnName, value):
 		# Getting List of current users in the database
 		Users_list = Users.objects.all()
-		
+
 		# Initial value of false
 		exists = False
 		# Parsing through users table
@@ -140,6 +140,8 @@ class Database():
 	# Check Log In Function to validate the user 
 	# Returns True if the username and password correspond, false otherwise
 	def validate_login(username, password):
+		# Getting List of current users in the database
+		Users_list = Users.objects.all()
 		# initially invalid log in
 		valid = False
 
