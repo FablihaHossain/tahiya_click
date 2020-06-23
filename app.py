@@ -166,11 +166,11 @@ def viewAlbum(albumID):
 	currentAlbum = Database.get_album(albumID)
 
 	# Getting all the images in the current album
-	images = []
+	currentImages = []
 	for img in currentAlbum.images:
-		images.append(img)
+		currentImages.append(img)
 
-	return render_template("viewAlbum.html", album = currentAlbum, img = images)
+	return render_template("viewAlbum.html", album = currentAlbum, img = currentImages)
 
 @app.route("/updateAlbum/<int:albumID>", methods = ['GET', 'POST'])
 def updateAlbum(albumID):
@@ -180,10 +180,14 @@ def updateAlbum(albumID):
 	# Getting the current album information based on id given
 	currentAlbum = Database.get_album(albumID)
 
-	# Getting all the images in the current album
+	# Images list for form
 	images = []
+
+	# Getting all the images in the current album
+	currentImages = []
 	for img in currentAlbum.images:
-		images.append(img)
+		images.append(img) # will be updated
+		currentImages.append(img) # will not be updated
 
 	# Processing the Update Form
 	if request.method == 'POST':
@@ -199,16 +203,28 @@ def updateAlbum(albumID):
 			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
 		else:
 			validFiles = True
+			duplicateFilePaths = []
 			for file in new_images_list:
 				if allowed_file(file.filename):
+					pathname = "application/static/images/%s" % file.filename
 					newFilename = "/static/images/%s" % file.filename
-					if newFilename not in images:
+
+					if os.path.exists(pathname):
+						duplicateFilePaths.append(pathname)
+					elif newFilename not in images:
 						images.append(newFilename)
 						uploaded_files.append(file)
-				else:
-					flash("Error! Wrong filetype")
-					validFiles = False
-					break
+					else:
+						flash("Error! Wrong filetype")
+						validFiles = False
+						break
+
+			# If uploaded file name exists already, prompts user to rename and re-upload image files
+			if duplicateFilePaths:
+				validFiles = False
+				flash("Error... Please Rename the Following Files:")
+				for file in duplicateFilePaths:
+					flash(file[26:])
 
 			# Updating the images list for deletion
 			for img in delete_image_list:
@@ -234,7 +250,8 @@ def updateAlbum(albumID):
 
 				# Redirecting to album page
 				return redirect(url_for('albums'))
-	return render_template("updateAlbum.html", album = currentAlbum, img = images)
+
+	return render_template("updateAlbum.html", album = currentAlbum, img = currentImages)
 
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
 # Credit to https://stackoverflow.com/questions/31859903/get-the-value-of-a-checkbox-in-flask
