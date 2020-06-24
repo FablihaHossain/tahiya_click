@@ -193,8 +193,15 @@ def updateAlbum(albumID):
 	if not session.get('username'):
 		return redirect(url_for('login'))
 
+	# Current User's ID
+	userId = session.get('user_id')
+
 	# Getting the current album information based on id given
 	currentAlbum = Database.get_album(albumID)
+
+	# Only Album Owners can update their own albums 
+	if userId != currentAlbum.owner_id:
+		return redirect(url_for('albums'))
 
 	# Images list for form
 	images = []
