@@ -3,25 +3,25 @@
 
 {% block body %}
 
-		{% if album.owner_id == currentUserID %}
-		<div class ="text-center">
-			<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
-		</div>
-		{% endif %}
 <div class = "body-html body-size">
 	<div class = "container text-center">
 		<h3>
   			{{album.name}}
   			<br>
-  	<small class="text-muted">Description: {{album.description}}</small>
-</h3>
-		
+  			<small class="text-muted">Description: {{album.description}}</small>
+		</h3>
 	</div>
+		<div class ="text-center">
+			{% if album.owner_id == currentUserID %}
+			<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
+			{% endif %}
+			<a href="{{url_for('albums')}}" class="btn btn-primary btn-primary-block">Go Back</a>
+		</div>
 	<div>
+		<br>
 		{% for image in img %}
 			<img src="{{image}}" height= "350" width = "350"/>
 		{% endfor %}
 	</div>
 </div>
-
 {% endblock %}
