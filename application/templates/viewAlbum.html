@@ -3,9 +3,11 @@
 
 {% block body %}
 
-			<div class ="text-center">
-				<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
-			</div>
+		{% if album.owner_id == currentUserID %}
+		<div class ="text-center">
+			<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
+		</div>
+		{% endif %}
 <div class = "body-html body-size">
 	<div class = "container text-center">
 		<h3>
