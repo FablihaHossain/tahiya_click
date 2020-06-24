@@ -120,7 +120,8 @@ def albums():
 	# Cover images
 	coverImages = []
 	for album in albums_list:
-		coverImages.append(album.images[0]) 
+		if not album.images == []:
+			coverImages.append(album.images[0]) 
 
 	return render_template("albumsPage.html", users = users_list, albums = albums_list, user_albums = user_albums, other_albums = other_albums, img = images, coverImages = coverImages, currentUserID = userId)
 
