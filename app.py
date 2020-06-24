@@ -98,22 +98,31 @@ def albums():
 	# Getting all users in db
 	users_list = Users.objects.all()
 
+	# Current User's ID
+	userId = session.get('user_id')
+
 	# Getting all albums in db
 	albums_list = Albums.objects.all()
-	images = []
+	images = [] # list of all the images all of the albums
+	user_albums = [] # list of albums of current user
+	other_albums = [] # list of the rest of the albums
 	for album in albums_list:
+		# Getting all images from each album
 		for imgs in album.images:
 			images.append(imgs)
+
+		# Getting current logged in user's albums
+		if album.owner_id == userId:
+			user_albums.append(album)
+		else:
+			other_albums.append(album)
 
 	# Cover images
 	coverImages = []
 	for album in albums_list:
 		coverImages.append(album.images[0]) 
 
-	# Current User's ID
-	userId = session.get('user_id')
-
-	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages, currentUserID = userId)
+	return render_template("albumsPage.html", users = users_list, albums = albums_list, user_albums = user_albums, other_albums = other_albums, img = images, coverImages = coverImages, currentUserID = userId)
 
 # Checking if the file uploaded is the appropriate form
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
