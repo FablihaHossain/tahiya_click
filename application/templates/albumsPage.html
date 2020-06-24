@@ -3,14 +3,14 @@
 
 {% block body %}
 
-		<div class = "text-center">
+		<!-- <div class = "text-center">
 			<a href="{{url_for('newAlbum')}}" class="btn btn-primary btn-primary-block"> Add New Album! </a>
-		</div>
+		</div> -->
 		
 		<div class = "body-html body-size">
 		{% for album in albums %}
 		<p></p>
-		<div class="card mb-3" style="max-width: 540px;">
+		<div class="card mb-3" style="max-width: 650px;">
 		  <div class="row no-gutters">
 		    <div class="col-md-4">
 		    {% for image in coverImages %}
@@ -31,7 +31,10 @@
 		      </div>
 		      <div class = "text-center">
 		      <a href="{{url_for('viewAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Check It Out!</a>
+
+		      {% if album.owner_id == currentUserID %}
 		      <a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
+		      {% endif %}
 		  </div>
 		    </div>
 		  </div>
