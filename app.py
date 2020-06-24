@@ -110,7 +110,10 @@ def albums():
 	for album in albums_list:
 		coverImages.append(album.images[0]) 
 
-	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages)
+	# Current User's ID
+	userId = session.get('user_id')
+
+	return render_template("albumsPage.html", users = users_list, albums = albums_list, img = images, coverImages = coverImages, currentUserID = userId)
 
 # Checking if the file uploaded is the appropriate form
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -170,7 +173,10 @@ def viewAlbum(albumID):
 	for img in currentAlbum.images:
 		currentImages.append(img)
 
-	return render_template("viewAlbum.html", album = currentAlbum, img = currentImages)
+	# Current User's ID
+	userId = session.get('user_id')
+
+	return render_template("viewAlbum.html", album = currentAlbum, img = currentImages, currentUserID = userId)
 
 @app.route("/updateAlbum/<int:albumID>", methods = ['GET', 'POST'])
 def updateAlbum(albumID):
