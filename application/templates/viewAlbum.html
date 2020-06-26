@@ -3,6 +3,15 @@
 
 {% block body %}
 
+<style type="text/css">
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 50%;
+  max-width: 500px;
+}
+</style>
+
 <div class = "body-html body-size">
 	<div class = "container text-center">
 		<h3>
@@ -20,8 +29,43 @@
 	<div>
 		<br>
 		{% for image in img %}
-			<img src="{{image}}" height= "350" width = "350"/>
+			<img id = "{{image}}" src="{{image}}" height= "300" width = "300" style = "cursor:pointer" class = "imgHover"/>
+
+			<div id="imageModal" class="imageModal">
+  				<span class="close">&times;</span>
+  					<img class="modal-content" id="currentImage">
+  					<div id="caption"></div>
+			</div>
 		{% endfor %}
 	</div>
 </div>
+
+<script>
+	const images = {{img | tojson }};
+
+	for(i = 0; i < images.length; i++)
+	{
+		console.log(images[i]);
+
+		var modal = document.getElementById("imageModal");
+		currentImage = images[i]
+		var img = document.getElementById(currentImage);
+		var modalImg = document.getElementById("currentImage");
+
+		img.onclick = function()
+		{
+		  	modal.style.display = "block";
+		  	modalImg.src = this.src;
+		}
+
+		var span = document.getElementsByClassName("close")[0];
+
+		span.onclick = function() { 
+  			modal.style.display = "none";
+		}
+	}
+</script>
 {% endblock %}
+
+<!-- Credit to https://stackoverflow.com/questions/44221256/flask-python-list-to-javascript-->
+<!-- Credit to https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal_img-->
