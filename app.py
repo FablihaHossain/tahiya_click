@@ -9,8 +9,6 @@ from database import Database
 # Login Route
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
-	#db = Database.db_connection()
-
 	# Getting the username and password entered
 	if request.method == 'POST':
 		if request.form['username'] == "" or request.form['password'] == "":
@@ -186,6 +184,9 @@ def viewAlbum(albumID):
 	# Current User's ID
 	userId = session.get('user_id')
 
+	for image in currentImages:
+		print(image)
+
 	return render_template("viewAlbum.html", album = currentAlbum, img = currentImages, currentUserID = userId)
 
 @app.route("/updateAlbum/<int:albumID>", methods = ['GET', 'POST'])
@@ -228,19 +229,23 @@ def updateAlbum(albumID):
 			validFiles = True
 			duplicateFilePaths = []
 			for file in new_images_list:
-				if allowed_file(file.filename):
-					pathname = "application/static/images/%s" % file.filename
-					newFilename = "/static/images/%s" % file.filename
+				name_of_file = file.filename 
+				if allowed_file(name_of_file):
+					if " " in name_of_file:
+						name_of_file = name_of_file.replace(" ", "_")
+
+					pathname = "application/static/images/%s" % name_of_file
+					newFilename = "/static/images/%s" % name_of_file
 
 					if os.path.exists(pathname):
 						duplicateFilePaths.append(pathname)
 					elif newFilename not in images:
 						images.append(newFilename)
 						uploaded_files.append(file)
-					else:
-						flash("Error! Wrong filetype")
-						validFiles = False
-						break
+				else:
+					flash("Error! Wrong filetype")
+					validFiles = False
+					break
 
 			# If uploaded file name exists already, prompts user to rename and re-upload image files
 			if duplicateFilePaths:
