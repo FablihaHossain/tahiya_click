@@ -40,14 +40,13 @@
   				</div>
 			</div>
 
-		<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos</label>
-	<div class="input-group mb-3">
-  		<div class="input-group-prepend">
+		
+	<div class="input-group mb-3 form-group row">
+		<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos:</label>
+  		<div>
   			{% for image in img %}
-    		<div class="input-group-text">
-    			<img src="{{image}}" height= "100" width = "100"/>
-      			<input type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
-    		</div>
+    				<img src="{{image}}" height= "100" width = "100"/>
+      				<input type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
     		{% endfor %}
   		</div>
 	</div>
