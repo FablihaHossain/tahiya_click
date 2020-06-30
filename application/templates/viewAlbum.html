@@ -14,11 +14,13 @@
 
 <div class = "body-html body-size">
 	<div class = "container text-center">
-		<h3>
+		<h4>
+  			<b style = "color:#992900">Album Name:</b> 
   			{{album.name}}
   			<br>
-  			<small class="text-muted">Description: {{album.description}}</small>
-		</h3>
+  			<small class="text-center" style = "color:#992900"><b>Album Description:</b></small>
+  			<small>{{album.description}}</small>
+		</h4>
 	</div>
 		<div class ="text-center">
 			{% if album.owner_id == currentUserID %}
@@ -28,6 +30,11 @@
 		</div>
 	<div>
 		<br>
+		{% if not img %}
+			<div class = "text-center">
+				<h3><b>This Album Currently Has No Photos</b></h3>
+			</div>
+		{% endif %}
 		{% for image in img %}
 			<img id = "{{image}}" src="{{image}}" height= "300" width = "300" style = "cursor:pointer" class = "imgHover"/>
 
