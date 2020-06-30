@@ -70,7 +70,7 @@ class Database():
 		nextID = lastAlbumID + 1
 
 		# Creating new album with given data
-		newAlbum = Albums(album_id = nextID, name = name, description = description, owner_id = owner_id, images = img)
+		newAlbum = Albums(album_id = nextID, name = name, description = description, owner_id = owner_id, images = img, cover_image = "not_chosen")
 		
 		# Checking to see if album already exists in the database with given name and owner id
 		exists = Database.check_duplicate_album(name, owner_id)
@@ -92,6 +92,8 @@ class Database():
 				intendedAlbum.update(set__description = newValue)
 			elif(columnName == "images"):
 				intendedAlbum.update(set__images = newValue)
+			elif(columnName == "cover_image"):
+				intendedAlbum.update(set__cover_image = newValue)
 			else:
 				print("Error... Column Name not found")
 		elif tableName == "users" and pkColumn == "user_id":
