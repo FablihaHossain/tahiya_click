@@ -36,6 +36,10 @@
 		<div class = "form-group row">
 			<label for = "updateAlbumCoverImage" class = "col-form-label col-sm-2 add-album-words"> Cover Image</label>
 			<div class="form-check">
+				{% if not img %}
+					<br><b>No Photos to Choose From</b>
+				{% endif %}
+
 				{% for image in img %}
 					<img src="{{image}}" height= "100" width = "100"/>
 	  				<input class="form-check-input" type="radio" name="coverImage" id="{{image}}" value="{{image}}">
@@ -53,6 +57,10 @@
 		<div class="input-group mb-3 form-group row">
 			<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos:</label>
 	  		<div class="form-check">
+	  			{% if not img %}
+					<br><b>No Photos to Delete</b>
+				{% endif %}
+				
 	  			{% for image in img %}
 	    			<img src="{{image}}" height= "100" width = "100"/>
 	      			<input type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
