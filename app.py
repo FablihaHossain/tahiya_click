@@ -119,7 +119,10 @@ def albums():
 	coverImages = []
 	for album in albums_list:
 		if not album.images == []:
-			coverImages.append(album.images[0]) 
+			if album.cover_image == "not_chosen":
+				coverImages.append(album.images[0])
+			else:
+				coverImages.append(album.cover_image)
 
 	return render_template("albumsPage.html", users = users_list, albums = albums_list, user_albums = user_albums, other_albums = other_albums, img = images, coverImages = coverImages, currentUserID = userId)
 
@@ -218,6 +221,7 @@ def updateAlbum(albumID):
 		# Return redirect(url_for('albums'))
 		new_album_name = request.form['name']
 		new_album_description = request.form['description']
+		new_cover_image = request.form.get('coverImage')
 		delete_image_list = request.form.getlist('images')
 		new_images_list = request.files.getlist("newImages")
 		uploaded_files = []
@@ -226,6 +230,7 @@ def updateAlbum(albumID):
 		if "" in [new_album_name, new_album_description]:
 			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
 		else:
+			print(new_cover_image)
 			validFiles = True
 			duplicateFilePaths = []
 			for file in new_images_list:
@@ -275,6 +280,10 @@ def updateAlbum(albumID):
 
 				# Updating album images
 				Database.update_db("albums", "album_id", albumID, "images", images)
+
+				# Updating Cover Image
+				if new_cover_image is not None:
+					Database.update_db("albums", "album_id", albumID, "cover_image", new_cover_image)
 
 				# Redirecting to album page
 				return redirect(url_for('albums'))
