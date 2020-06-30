@@ -20,6 +20,7 @@ class Albums(Document):
 	description = StringField(max_length = 100)
 	owner_id = IntField() # User ID of the one that created the album
 	images = ListField(StringField(max_length = 200)) # Array of names of Image Files
+	cover_image = StringField(max_length = 2000) # Cover Image defaults to first image in album, unless specified otherwise
 
 
 	
