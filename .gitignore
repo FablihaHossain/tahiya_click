@@ -7,3 +7,8 @@ config.py
 
 # Images Folder (with images for database)
 application/static/images/
+
+# Ignore Following
+.DS_Store
+application/.DS_Store
+application/static/.DS_Store
