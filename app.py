@@ -1,4 +1,6 @@
 import os
+from os import path
+import pathlib
 from application import app, db
 from werkzeug import secure_filename
 from config import Config
@@ -82,6 +84,16 @@ def index():
 	# Getting all users in db
 	users_list = Users.objects.all()
 
+	#os.makedirs('/application/static/images/test1')
+	#file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+	#pathlib.Path(app.config['UPLOAD_FOLDER'], "test1").mkdir(exist_ok=True)
+	if path.exists("application/static/images/test_renaming"):
+		os.rename('application/static/images/test_renaming', 'application/static/images/final_test_rename')
+
+	path_name = "application/static/images/test_renaming"
+	print(path_name.split('/')[2])
+
 	return render_template("index.html", users = users_list)
 
 @app.route("/about")
@@ -144,6 +156,7 @@ def newAlbum():
 		album_images = request.files.getlist("image")
 		img = []
 		uploaded_files = []
+		path_album_name = album_name
 
 		if "" in [album_name, album_description, album_images]:
 			flash ("Error! One or more fields is empty! Please fill in ALL the fields")
@@ -151,7 +164,9 @@ def newAlbum():
 			validFiles = True
 			for file in album_images:
 				if allowed_file(file.filename):
-					newFilename = "/static/images/%s" % file.filename
+					if " " in path_album_name:
+						path_album_name = path_album_name.replace(" ", "_")
+					newFilename = "/static/images/%s/%s" % (path_album_name, file.filename)
 					img.append(newFilename)
 					uploaded_files.append(file)
 				else:
@@ -159,9 +174,10 @@ def newAlbum():
 					validFiles = False
 					break
 			if validFiles:
+				pathlib.Path(app.config['UPLOAD_FOLDER'], path_album_name).mkdir(exist_ok=True)
 				for file in uploaded_files:
 					filename = secure_filename(file.filename)
-					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], path_album_name, filename))
 
 				# Getting the user_id of the album creator
 				current_user_id = session.get('user_id')
@@ -225,12 +241,29 @@ def updateAlbum(albumID):
 		delete_image_list = request.form.getlist('images')
 		new_images_list = request.files.getlist("newImages")
 		uploaded_files = []
+		path_album_name = new_album_name
+		if " " in path_album_name:
+			path_album_name = path_album_name.replace(" ", "_")
 
 		# Ensuring no empty fields are submitted
 		if "" in [new_album_name, new_album_description]:
 			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
 		else:
-			print(new_cover_image)
+			currentAlbumName = currentAlbum.name
+			if " " in currentAlbumName:
+				currentAlbumName = currentAlbumName.replace(" ", "_")
+
+			if path.exists("application/static/images/%s" % currentAlbumName):
+				current_album_path = 'application/static/images/%s' % currentAlbumName
+				new_album_path = 'application/static/images/%s' % path_album_name
+				os.rename(current_album_path, new_album_path)
+
+				for currentImage in currentAlbum.images:
+					imageName = currentImage.split('/')[4]
+					images.remove(currentImage)
+					new_pathname_for_current_image = '/static/images/%s/%s' % (path_album_name, imageName)
+					images.append(new_pathname_for_current_image)
+
 			validFiles = True
 			duplicateFilePaths = []
 			for file in new_images_list:
@@ -239,8 +272,9 @@ def updateAlbum(albumID):
 					if " " in name_of_file:
 						name_of_file = name_of_file.replace(" ", "_")
 
-					pathname = "application/static/images/%s" % name_of_file
-					newFilename = "/static/images/%s" % name_of_file
+					pathname = "application/static/images/%s/%s" % (path_album_name, name_of_file)
+
+					newFilename = "/static/images/%s/%s" % (path_album_name, name_of_file)
 
 					if os.path.exists(pathname):
 						duplicateFilePaths.append(pathname)
@@ -270,7 +304,7 @@ def updateAlbum(albumID):
 			if validFiles:
 				for file in uploaded_files:
 					filename = secure_filename(file.filename)
-					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+					file.save(os.path.join(app.config['UPLOAD_FOLDER'], path_album_name, filename))
 
 				# Updating album name
 				Database.update_db("albums", "album_id", albumID, "name", new_album_name)
@@ -292,3 +326,5 @@ def updateAlbum(albumID):
 
 # Credit to https://gist.github.com/liulixiang1988/cc3093b2d8cced6dcf38
 # Credit to https://stackoverflow.com/questions/31859903/get-the-value-of-a-checkbox-in-flask
+# Credit to https://stackoverflow.com/questions/52814669/flask-create-and-upload-files-into-folders-dynamically
+# Credit to https://www.guru99.com/python-rename-file.html
