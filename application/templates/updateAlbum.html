@@ -17,24 +17,24 @@
 
 <div class = "jumbotron">
 	<div class = "container text-center login-words">
-		Update Album Details
+		<h5><b>Update Album Details</b></h5>
 	</div>
 	<form method = post enctype=multipart/form-data>
 		<div class = "form-group row">
-			<label for ="updateAlbumName" class = "col-form-label col-sm-2 add-album-words">Album Name</label>
+			<label for ="updateAlbumName" class = "col-form-label col-sm-2 add-album-words" style = "color:#992900"><b>Album Name</b></label>
 			<div class = "register-fields col-sm-10">
 					<input type="name" class= "form-control" name="name" value = "{{album.name}}">
 			</div>
 		</div>
 		<div class = "form-group row">
-			<label for ="updateAlbumDescription" class = "col-form-label col-sm-2 add-album-words">Album Description</label>
+			<label for ="updateAlbumDescription" class = "col-form-label col-sm-2 add-album-words" style = "color:#992900"><b>Album Description</b></label>
 			<div class = "register-fields col-sm-10">
 				<input type="description" class= "form-control" name="description" value = "{{album.description}}">
 			</div>
 		</div>
 
 		<div class = "form-group row">
-			<label for = "updateAlbumCoverImage" class = "col-form-label col-sm-2 add-album-words"> Cover Image</label>
+			<label for = "updateAlbumCoverImage" class = "col-form-label col-sm-2 add-album-words" style = "color:#992900"><b>Cover Image</b></label>
 			<div class="form-check">
 				{% if not img %}
 					<br><b>No Photos to Choose From</b>
@@ -48,28 +48,28 @@
 		</div>
 
 		<div class = "form-group row">
-			<label for="files" class = "col-form-label col-sm-2 add-album-words">Add Photos:</label>
+			<label for="files" class = "col-form-label col-sm-2 add-album-words" style = "color:#992900"><b>Add Photos:</b></label>
 			<div class = "add-image col-sm-10">
 				  <input type="file" id = "addImage" name="newImages" multiple><br><br>
 			</div>
 		</div>
 		
-		<div class="input-group mb-3 form-group row">
-			<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words">Delete Photos:</label>
+		<div class="form-group row">
+			<label for ="deleteAlbumImages" class = "col-form-label col-sm-2 add-album-words" style = "color:#992900"><b>Delete Photos:</b></label>
 	  		<div class="form-check">
 	  			{% if not img %}
 					<br><b>No Photos to Delete</b>
 				{% endif %}
-				
+
 	  			{% for image in img %}
 	    			<img src="{{image}}" height= "100" width = "100"/>
-	      			<input type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
+	      			<input class="form-check-input" type="checkbox" aria-label="Checkbox for following text input" name = "images" value = {{image}}>
 	    		{% endfor %}
 	  		</div>
 		</div>
 
 		<div class = "text-center">
-			<button type="button" class = "btn btn-primary btn-primary-block text-center" data-toggle="modal" data-target="#updateModal"> Update Album</button>
+			<button type="button" class = "btn btn-primary btn-primary-block text-center" data-toggle="modal" data-target="#updateModal"><b>Update Album</b></button>
 		</div>
 		<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
