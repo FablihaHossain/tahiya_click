@@ -37,7 +37,7 @@
 
 .jumbotron{
 	background-color: transparent;
-	padding:4rem 33rem;
+	padding:3rem 10rem;
 	position: relative;
 	height: auto;
 }
@@ -58,13 +58,6 @@
 	padding-bottom: 15px;
 }
 
-/*.form-control-plaintext{
-	padding: .375rem .75rem;
-	border: 1px solid #ced4da;
-    border-radius: auto;
-    padding-left: 5px;
-}*/
-
 .register-fields{
     height: 55px;
     padding-right: 30px;
@@ -78,7 +71,7 @@
 
 .jumbotron-register{	
 	background-color: transparent;
-	padding:4rem 25rem;
+	padding:4rem 10rem;
 	font-size: 1rem;
 	position: relative;
 	height: auto;
