@@ -249,20 +249,30 @@ def updateAlbum(albumID):
 		if "" in [new_album_name, new_album_description]:
 			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
 		else:
+			# Current Files and Directories Based on New Album Name
 			currentAlbumName = currentAlbum.name
 			if " " in currentAlbumName:
 				currentAlbumName = currentAlbumName.replace(" ", "_")
 
 			if path.exists("application/static/images/%s" % currentAlbumName):
+				# Updating Album File Name in Images Folder
 				current_album_path = 'application/static/images/%s' % currentAlbumName
 				new_album_path = 'application/static/images/%s' % path_album_name
 				os.rename(current_album_path, new_album_path)
 
+				# Updating Routes of Current Images in Album
 				for currentImage in currentAlbum.images:
 					imageName = currentImage.split('/')[4]
 					images.remove(currentImage)
 					new_pathname_for_current_image = '/static/images/%s/%s' % (path_album_name, imageName)
 					images.append(new_pathname_for_current_image)
+
+				# Updating Route of Current Album Cover Image
+				currentCoverImage = currentAlbum.cover_image
+				coverImageName = currentCoverImage.split('/')[4]
+				updatedCoverImagePathName = '/static/images/%s/%s' % (path_album_name, coverImageName)
+				Database.update_db("albums", "album_id", albumID, "cover_image", updatedCoverImagePathName) 
+
 
 			validFiles = True
 			duplicateFilePaths = []
