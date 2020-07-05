@@ -299,9 +299,9 @@ def updateAlbum(albumID):
 			# If uploaded file name exists already, prompts user to rename and re-upload image files
 			if duplicateFilePaths:
 				validFiles = False
-				flash("Error... Please Rename the Following Files:")
+				flash("Error... Following Filename Already Exists in Album:")
 				for file in duplicateFilePaths:
-					flash(file[26:])
+					flash(file.split('/')[4])
 
 			# Updating the images list for deletion
 			for img in delete_image_list:
