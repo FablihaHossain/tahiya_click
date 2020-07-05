@@ -84,16 +84,6 @@ def index():
 	# Getting all users in db
 	users_list = Users.objects.all()
 
-	#os.makedirs('/application/static/images/test1')
-	#file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-	#pathlib.Path(app.config['UPLOAD_FOLDER'], "test1").mkdir(exist_ok=True)
-	if path.exists("application/static/images/test_renaming"):
-		os.rename('application/static/images/test_renaming', 'application/static/images/final_test_rename')
-
-	path_name = "application/static/images/test_renaming"
-	print(path_name.split('/')[2])
-
 	return render_template("index.html", users = users_list)
 
 @app.route("/about")
@@ -152,7 +142,6 @@ def newAlbum():
 	if request.method == 'POST':
 		album_name = request.form['name']
 		album_description = request.form['description']
-		# album_images = request.form.getlist("imagefiles[]")
 		album_images = request.files.getlist("image")
 		img = []
 		uploaded_files = []
