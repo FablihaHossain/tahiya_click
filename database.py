@@ -1,4 +1,4 @@
-from application import app, db
+from application import app, db, hashing
 from flask_mongoengine import MongoEngine
 from models import Users, Albums
 from config import Config
@@ -47,8 +47,11 @@ class Database():
 		# Generating a new ID for the new user
 		newId = lastUserID + 1
 
+		# Hashing the password
+		password_hash = Database.hash_password(pw)
+
 		# Creating new user with given data
-		newUser = Users(user_id = newId, firstname = fname, lastname = lname, email = email, username = user, password = pw, role = role)
+		newUser = Users(user_id = newId, firstname = fname, lastname = lname, email = email, username = user, password = password_hash, role = role)
 
 		# Checks to see if new user currently exists in the database with given email address and username
 		email_exists = Database.check_duplicate_user("email", email)
@@ -143,7 +146,8 @@ class Database():
 
 		# Going through all users in the database
 		for user in Users_list:
-			if user.username == username and user.password == password:
+			# Validating username and password (using hashing function)
+			if user.username == username and Database.validate_password_hash(password, user.password):
 				valid = True
 
 		return valid
@@ -165,3 +169,27 @@ class Database():
 		for user in Users_list:
 			if user.username == username:
 				return user.user_id
+
+	# Function to Hash password (using flask-hashing)
+	def hash_password(plaintext, salt='fab'):
+		try:
+			# Creating the password hash
+			password_hash = hashing.hash_value(plaintext)
+
+			# Return the hashed password
+			return password_hash
+		except Exception as error:
+			print("Error... %s" % error)
+
+	# Function to check password hashes to check if equal or not
+	def validate_password_hash(password, password_hash, salt='fab'):
+		try:
+			# Using hashing function to check values
+			validate = hashing.check_value(password_hash, password)
+
+			# Returning the value
+			return validate
+		except Exception as error:
+			print("Error... %s" % error)
+
+
