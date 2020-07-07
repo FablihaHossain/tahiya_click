@@ -257,10 +257,11 @@ def updateAlbum(albumID):
 					images.append(new_pathname_for_current_image)
 
 				# Updating Route of Current Album Cover Image
-				currentCoverImage = currentAlbum.cover_image
-				coverImageName = currentCoverImage.split('/')[4]
-				updatedCoverImagePathName = '/static/images/%s/%s' % (path_album_name, coverImageName)
-				Database.update_db("albums", "album_id", albumID, "cover_image", updatedCoverImagePathName) 
+				if currentAlbum.cover_image != "not_chosen":
+					currentCoverImage = currentAlbum.cover_image
+					coverImageName = currentCoverImage.split('/')[4]
+					updatedCoverImagePathName = '/static/images/%s/%s' % (path_album_name, coverImageName)
+					Database.update_db("albums", "album_id", albumID, "cover_image", updatedCoverImagePathName) 
 
 
 			validFiles = True
@@ -317,6 +318,9 @@ def updateAlbum(albumID):
 				# Updating Cover Image
 				if new_cover_image is not None:
 					Database.update_db("albums", "album_id", albumID, "cover_image", new_cover_image)
+				# If all images were deleted from album, there is no cover image
+				if not images:
+					Database.update_db("albums", "album_id", albumID, "cover_image", "not_chosen")
 
 				# Redirecting to album page
 				return redirect(url_for('albums'))
