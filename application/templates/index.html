@@ -49,14 +49,15 @@
 	</head>
 		<body class = "body-html body-size">
 		{% block body %}
-			<div id="body-html body-size">{% block content %} {% endblock %}</div>
-			<h4 class = "text-center">
-				Welcome To Tahiya Click! <br> A Photography Site to showcase your wonderful captures.  
+<!-- 			<div>{% block content %} {% endblock %}</div>
+ -->			<h4 class = "text-center">
+				Welcome To Tahiya Click! <br> A Photography site to showcase your wonderful captures.  
 				<br><br>
 				<img id = "sony_camera" src="static/images/site_images/sony_camera.jpg" height= "300" width = "400">
 				<br>Developed by Fabliha Hossain <br>
 			</h4>
 
+			{% if not session['username']%}
 			<div class = "text-center">
 				<a href="{{url_for('login')}}" class = "btn btn-primary btn-primary-block">Login Here</a>
 			</div>
@@ -64,6 +65,7 @@
 			<div class = "text-center">
 				New To The Site? <a href="{{url_for('register')}}" class = "btn btn-primary btn-primary-block">Register Here</a>
 			</div>
+			{% endif %}
 		</body>
 		{% endblock %}
 </html>
