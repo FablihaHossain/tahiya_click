@@ -194,9 +194,6 @@ def viewAlbum(albumID):
 	# Current User's ID
 	userId = session.get('user_id')
 
-	for image in currentImages:
-		print(image)
-
 	return render_template("viewAlbum.html", album = currentAlbum, img = currentImages, currentUserID = userId)
 
 @app.route("/updateAlbum/<int:albumID>", methods = ['GET', 'POST'])
@@ -214,24 +211,30 @@ def updateAlbum(albumID):
 	if currentAlbum == None or userId != currentAlbum.owner_id:
 		return redirect(url_for('albums'))
 
-	# Images list for form
+	# Images list for update form
 	images = []
 
 	# Getting all the images in the current album
 	currentImages = []
 	for img in currentAlbum.images:
-		images.append(img) # will be updated
-		currentImages.append(img) # will not be updated
+		images.append(img) # will be updated in form
+		currentImages.append(img) # will not be updated in form
 
 	# Processing the Update Form
 	if request.method == 'POST':
-		# Return redirect(url_for('albums'))
+		currentAlbum = Database.get_album(albumID) # just in case form refreshes but new changes were made
+		# Getting the new changes 
 		new_album_name = request.form['name']
 		new_album_description = request.form['description']
 		new_cover_image = request.form.get('coverImage')
+		print(new_cover_image)
 		delete_image_list = request.form.getlist('images')
 		new_images_list = request.files.getlist("newImages")
+
+		# List to hold all file names
 		uploaded_files = []
+
+		# Updating the album path name in case there are spaces
 		path_album_name = new_album_name
 		if " " in path_album_name:
 			path_album_name = path_album_name.replace(" ", "_")
@@ -240,50 +243,86 @@ def updateAlbum(albumID):
 		if "" in [new_album_name, new_album_description]:
 			flash("Error! One or more fields was empty...Please remember to fill in ALL the fields")
 		else:
-			# Current Files and Directories Based on New Album Name
+			# Deleting Images from Album itself (and from the image folder in application)
+			for img in delete_image_list:
+				img_albumname = img.split('/')[3] # Getting album pathname
+				img_filename = img.split('/')[4] # Getting image filename
+				img_pathname = img_albumname + "/" + img_filename # Getting the particular path to be deleted
+				os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img_pathname)) # Deleting the image from the directory
+				images.remove(img) # Updating the images list for deletion
+
+			# Updating Cover Image (before any potential album name change)
+			if new_cover_image is not None:
+				print("updating cover image to new chosen image")
+				Database.update_db("albums", "album_id", albumID, "cover_image", new_cover_image)
+
+			# If all images were deleted from album, there is no cover image
+			if not images:
+				print("updating cover image to not chosen")
+				Database.update_db("albums", "album_id", albumID, "cover_image", "not_chosen")
+
+			# Getting current file path name based on current Album Name
 			currentAlbumName = currentAlbum.name
 			if " " in currentAlbumName:
 				currentAlbumName = currentAlbumName.replace(" ", "_")
 
+			# If the path alredy exists for the album, it will make the following updates
 			if path.exists("application/static/images/%s" % currentAlbumName):
-				# Updating Album File Name in Images Folder
+				# Renaming Album File Name in Images Folder
 				current_album_path = 'application/static/images/%s' % currentAlbumName
 				new_album_path = 'application/static/images/%s' % path_album_name
 				os.rename(current_album_path, new_album_path)
 
-				# Updating Routes of Current Images in Album
-				for currentImage in currentAlbum.images:
+				# Updating Routes of Current Images in Album (for new file path)
+				for currentImage in images:
 					imageName = currentImage.split('/')[4]
 					images.remove(currentImage)
 					new_pathname_for_current_image = '/static/images/%s/%s' % (path_album_name, imageName)
 					images.append(new_pathname_for_current_image)
 
-				# Updating Route of Current Album Cover Image
-				if currentAlbum.cover_image != "not_chosen":
+				# Updating Route of Current Album Cover Image (for new file path)
+				currentAlbum = Database.get_album(albumID)
+				if currentAlbum.cover_image is not "not_chosen":
 					currentCoverImage = currentAlbum.cover_image
+					print(currentCoverImage)
 					coverImageName = currentCoverImage.split('/')[4]
 					updatedCoverImagePathName = '/static/images/%s/%s' % (path_album_name, coverImageName)
+					print("updating cover image to %s" % updatedCoverImagePathName)
 					Database.update_db("albums", "album_id", albumID, "cover_image", updatedCoverImagePathName) 
 
+			# Updating album name in db
+			Database.update_db("albums", "album_id", albumID, "name", new_album_name)
 
+			# Updating album description in db
+			Database.update_db("albums", "album_id", albumID, "description", new_album_description)
+
+			# Boolean to keep track of validity of newly updateds files
 			validFiles = True
+
+			# List of files to inform user that name of file already exists in the album
 			duplicateFilePaths = []
+
+			# Parsing through all files that was uploaded
 			for file in new_images_list:
-				name_of_file = file.filename 
+				name_of_file = file.filename
+				# Checking file extension 
 				if allowed_file(name_of_file):
+					# If there are spaces in the file name, replaces them with underscore
 					if " " in name_of_file:
 						name_of_file = name_of_file.replace(" ", "_")
 
+					# Pathname and Filename for the uploaded image
 					pathname = "application/static/images/%s/%s" % (path_album_name, name_of_file)
-
 					newFilename = "/static/images/%s/%s" % (path_album_name, name_of_file)
 
+					# If path name doesn't exist, it appends the new filename to image list. It goes to the duplicate list otherwise
 					if os.path.exists(pathname):
 						duplicateFilePaths.append(pathname)
 					elif newFilename not in images:
 						images.append(newFilename)
 						uploaded_files.append(file)
 				else:
+					# Disregards form if wrong file extension was uploaded
 					flash("Error! Wrong filetype")
 					validFiles = False
 					break
@@ -295,34 +334,14 @@ def updateAlbum(albumID):
 				for file in duplicateFilePaths:
 					flash(file.split('/')[4])
 
-			# Updating the images list for deletion
-			for img in delete_image_list:
-				# Deleting Images from Album (and image folder in application)
-				img_filename = img[15:]
-				os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
-				images.remove(img)
-
-
+			# If all the files uploaded are valid, then continue to upload
 			if validFiles:
 				for file in uploaded_files:
 					filename = secure_filename(file.filename)
 					file.save(os.path.join(app.config['UPLOAD_FOLDER'], path_album_name, filename))
 
-				# Updating album name
-				Database.update_db("albums", "album_id", albumID, "name", new_album_name)
-
-				# Updating album description
-				Database.update_db("albums", "album_id", albumID, "description", new_album_description)
-
-				# Updating album images
+				# Updating album images field in the db
 				Database.update_db("albums", "album_id", albumID, "images", images)
-
-				# Updating Cover Image
-				if new_cover_image is not None:
-					Database.update_db("albums", "album_id", albumID, "cover_image", new_cover_image)
-				# If all images were deleted from album, there is no cover image
-				if not images:
-					Database.update_db("albums", "album_id", albumID, "cover_image", "not_chosen")
 
 				# Redirecting to album page
 				return redirect(url_for('albums'))
