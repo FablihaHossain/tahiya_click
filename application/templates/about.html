@@ -6,19 +6,20 @@
 <div class = "body-html body-size">
 	<div class = "container text-center about-words">
 		<br>
-		<b><i>"A Photo is Worth a Thousand Words"</i> - Fred R. Barnard</b>
-		<br>
-		This is a site that gives photographers the opportunity to tell a story through their photo collections. Users are able to create their own accounts and share their photos while also viewing the photos of fellow photographers. 	
+		<b style = "font-family: cursive; font-size: 1.5rem;"><i>"A Photo is Worth a Thousand Words"</i> - Fred R. Barnard</b>
+		<br>This is a site that gives photographers the opportunity to tell a story through their photo collections. Users are able to create their own accounts and share their photos while also viewing the photos of fellow photographers. 	
 		This website is inspired by my cousin, Farhana Sufian, who introduced me to the wonders of photography.
-		<br>
+		<br><br>
 		<img id = "sony_camera" src="static/images/site_images/sony_camera.jpg" height= "300" width = "400">
 		<img id = "me_camera2" src="static/images/site_images/me_with_camera2.jpg" height= "400" width = "300">
 		<br>
 		This project implements Python Flask for the frontend and MongoDB for the backend. 
 	</div>
 
+	{% if not session['username']%}
 	<div class = "text-center">
 		<a href="{{url_for('login')}}" class = "btn btn-primary btn-primary-block">Login Here</a>
 	</div>
+	{% endif %}
 </div>
 {% endblock %}
