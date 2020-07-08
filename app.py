@@ -184,6 +184,8 @@ def viewAlbum(albumID):
 	# Getting all the information for given album id
 	currentAlbum = Database.get_album(albumID)
 
+	if currentAlbum == None:
+		return redirect((url_for('albums')))
 	# Getting all the images in the current album
 	currentImages = []
 	for img in currentAlbum.images:
@@ -209,7 +211,7 @@ def updateAlbum(albumID):
 	currentAlbum = Database.get_album(albumID)
 
 	# Only Album Owners can update their own albums 
-	if userId != currentAlbum.owner_id:
+	if currentAlbum == None or userId != currentAlbum.owner_id:
 		return redirect(url_for('albums'))
 
 	# Images list for form
