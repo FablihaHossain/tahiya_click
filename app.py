@@ -139,6 +139,15 @@ def newAlbum():
 	if not session.get('username'):
 		return redirect(url_for('login'))
 
+	# Getting list of current albums in the database
+	Albums_list = Albums.objects.all()
+
+	# List to keep track of all albums names currently in db
+	currentAlbumNames = []
+	for album in Albums_list:
+		currentAlbumNames.append(album.name)
+
+
 	if request.method == 'POST':
 		album_name = request.form['name']
 		album_description = request.form['description']
@@ -149,6 +158,8 @@ def newAlbum():
 
 		if "" in [album_name, album_description, album_images]:
 			flash ("Error! One or more fields is empty! Please fill in ALL the fields")
+		elif album_name in currentAlbumNames:
+			flash ("Error! Album Name Already Exists. Please Try Again")
 		else:
 			validFiles = True
 			for file in album_images:
