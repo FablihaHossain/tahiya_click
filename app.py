@@ -162,10 +162,10 @@ def newAlbum():
 			flash ("Error! Album Name Already Exists. Please Try Again")
 		else:
 			validFiles = True
+			if " " in album_name:
+				path_album_name = path_album_name.replace(" ", "_")
 			for file in album_images:
 				if allowed_file(file.filename):
-					if " " in path_album_name:
-						path_album_name = path_album_name.replace(" ", "_")
 					newFilename = "/static/images/%s/%s" % (path_album_name, file.filename)
 					img.append(newFilename)
 					uploaded_files.append(file)
@@ -238,7 +238,6 @@ def updateAlbum(albumID):
 		new_album_name = request.form['name']
 		new_album_description = request.form['description']
 		new_cover_image = request.form.get('coverImage')
-		print(new_cover_image)
 		delete_image_list = request.form.getlist('images')
 		new_images_list = request.files.getlist("newImages")
 
@@ -293,7 +292,7 @@ def updateAlbum(albumID):
 
 				# Updating Route of Current Album Cover Image (for new file path)
 				currentAlbum = Database.get_album(albumID)
-				if currentAlbum.cover_image is not "not_chosen":
+				if currentAlbum.cover_image != "not_chosen":
 					currentCoverImage = currentAlbum.cover_image
 					print(currentCoverImage)
 					coverImageName = currentCoverImage.split('/')[4]
