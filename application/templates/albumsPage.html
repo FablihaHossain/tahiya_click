@@ -17,13 +17,13 @@
 						 <div class="col-md-4">
 		    				{% for image in coverImages %}
 		    					{% if image in album.images %}
-		      						<img src="{{image}}" height= "200" width = "400" class="card-img" alt="../static/images/site_images/no_image.jpg">
+		      						<img src="{{image}}" height= "200" width = "400" class="card-img" alt="../static/site_images/no_image.jpg">
 		      					{% endif %}
 		     				{% endfor %}
 
 		     				<!-- If no images in album, puts default image-->
 		     				{% if not album.images %}
-		     				<img src="/static/images/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
+		     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
 		     				{% endif %}
 		    			</div>
 		    			<div class = "col-md-8">
@@ -63,7 +63,7 @@
 
 								     <!-- If no images in album, puts default image-->
 				     				{% if not album.images %}
-				     				<img src="/static/images/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
+				     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
 				     				{% endif %}
 		    					</div>
 		    			<div class="col-md-8">
