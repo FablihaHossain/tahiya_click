@@ -1,7 +1,6 @@
 # Tahiya Click: A Photography Site
 ## Developed by Fabliha Hossain
-
-###Project Objective: They say that a picture is worth a thousand words. The focus on this project was to develop a web application that allows photographers to share their content and their message to the world. The idea was inspired by my cousin Farhana Sufian, who introduced me to the wonders of photography.
+### Project Objective: They say that a picture is worth a thousand words. The focus on this project was to develop a web application that allows photographers to share their content and their message to the world. The idea was inspired by my cousin Farhana Sufian, who introduced me to the wonders of photography.
 
 **Welcome Page:** A simple welcome page featuring my Sony a6000 Professional Camera. This is the camera I use whenever I travel to new areas or offer my friends photoshoots. 
 ![Scheme](application/static/site_images/Welcome_Page.png)
