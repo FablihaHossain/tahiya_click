@@ -10,7 +10,8 @@
 
 			<link rel = "stylesheet" href="{{url_for('static', filename = 'stylesheet.css')}}">
 			{% endblock styles %}
-		{# Navigation Bar #}
+
+			<!-- Navigation Bar (That updates based on new sessions) -->
 			<nav class = "navbar navbar-expand-sm justify-content-center">
 				<a class = "navbar-brand nav-words navbar-text" href="{{url_for('index')}}">Tahiya Click</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +22,7 @@
 						<a class = "nav-link nav-words navbar-text" href="{{url_for('about')}}"> About </a>
 					</li>
 					<li class = "nav-item">
-						<a class = "nav-link nav-words navbar-text" href="{{url_for('albums')}}"> All Albums </a>						
+						<a class = "nav-link nav-words navbar-text" href="{{url_for('albums')}}"> All Albums </a>			
 					</li>
 					{% if not session['username'] %}
 					<li class = "nav-item">
@@ -47,26 +48,26 @@
 			</nav>
 		{% endblock head%}
 	</head>
-		<body class = "body-html body-size">
-		{% block body %}
-<!-- 			<div>{% block content %} {% endblock %}</div>
- -->		<br>
- 			<h4 class = "text-center">
-				Welcome To Tahiya Click! <br> A Photography Site to Showcase Your Wonderful Captures.  
-				<br><br>
-				<img id = "sony_camera" src="static/site_images/sony_camera.jpg" height= "300" width = "400">
-				<br><br>Developed by Fabliha Hossain <br>
-			</h4>
+	<body class = "body-html body-size">
+	{% block body %}
+		<br>
+		<!-- Welcome Page -->
+			<h4 class = "text-center">
+			Welcome To Tahiya Click! <br> A Photography Site to Showcase Your Wonderful Captures. <br><br>
+			<img id = "sony_camera" src="static/site_images/sony_camera.jpg" height= "300" width = "400">
+			<br><br>Developed by Fabliha Hossain <br>
+		</h4>
 
-			{% if not session['username']%}
-			<div class = "text-center">
-				<a href="{{url_for('login')}}" class = "btn btn-primary btn-primary-block">Login Here</a>
-			</div>
-			<br>
-			<div class = "text-center">
-				New To The Site? <a href="{{url_for('register')}}" class = "btn btn-primary btn-primary-block">Register Now</a>
-			</div>
-			{% endif %}
-		</body>
-		{% endblock %}
+		<!-- Login and Register Buttons appear if no one is currently logged in -->
+		{% if not session['username']%}
+		<div class = "text-center">
+			<a href="{{url_for('login')}}" class = "btn btn-primary btn-primary-block">Login Here</a>
+		</div>
+		<br>
+		<div class = "text-center">
+			New To The Site? <a href="{{url_for('register')}}" class = "btn btn-primary btn-primary-block">Register Now</a>
+		</div>
+		{% endif %}
+	</body>
+	{% endblock %}
 </html>
