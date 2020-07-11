@@ -2,7 +2,7 @@
 {% block title %} <title> Insert Album Title Here </title> {% endblock title %}
 
 {% block body %}
-
+<!-- CSS block specifically For Image Modals -->
 <style type="text/css">
 .modal-content {
   margin: auto;
@@ -16,25 +16,28 @@
 	<div class = "container text-center">
 		<h4>
   			<b style = "color:#992900">Album Name:</b> 
-  			{{album.name}}
-  			<br>
+  			{{album.name}}<br>
   			<small class="text-center" style = "color:#992900"><b>Album Description:</b></small>
   			<small>{{album.description}}</small>
 		</h4>
 	</div>
+		<!-- All Current Images in Album -->
 		<div class ="text-center">
+			<!-- Only Album Owners can update their own albums -->
 			{% if album.owner_id == currentUserID %}
-			<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
+				<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
 			{% endif %}
 			<a href="{{url_for('albums')}}" class="btn btn-primary btn-primary-block">Go Back</a>
 		</div>
 	<div>
 		<br>
+		<!-- If Album currently has no images, simply displays a text saying so -->
 		{% if not img %}
 			<div class = "text-center">
 				<h3><b>This Album Currently Has No Photos</b></h3>
 			</div>
 		{% endif %}
+		<!-- Displaying all images in the album and attaching a modal with them -->
 		{% for image in img %}
 			<img id = "{{image}}" src="{{image}}" height= "300" width = "300" style = "cursor:pointer" class = "imgHover"/>
 
@@ -47,26 +50,29 @@
 	</div>
 </div>
 
+<!-- Script to allow for modals for each image -->
 <script>
+	// List of all current images in the album
 	const images = {{img | tojson }};
 
+	// Going through the image list
 	for(i = 0; i < images.length; i++)
 	{
-		console.log(images[i]);
-
+		// Getting each of the modals attached to the image by their name
 		var modal = document.getElementById("imageModal");
 		currentImage = images[i]
 		var img = document.getElementById(currentImage);
 		var modalImg = document.getElementById("currentImage");
 
+		// On Click funtionality
 		img.onclick = function()
 		{
 		  	modal.style.display = "block";
 		  	modalImg.src = this.src;
 		}
 
+		// Close Button for Image Modal
 		var span = document.getElementsByClassName("close")[0];
-
 		span.onclick = function() { 
   			modal.style.display = "none";
 		}
