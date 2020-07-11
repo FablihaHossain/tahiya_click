@@ -3,22 +3,24 @@
 {% block title %} <title> Login Page </title> {% endblock title %}
 
 {% block body %}
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					<ul class = flashes>
-						{% for message in messages %}
-						<div class = "alert">
-							<p> {{message}}</p>
-						</div>
-						{% endfor %}
-					</ul>
-					{% endif %}
-				{% endwith %}
+	<!-- Flash Messages -->
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			<ul class = flashes>
+				{% for message in messages %}
+				<div class = "alert">
+					<p> {{message}}</p>
+				</div>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endwith %}
 
 <body>
 	<div class =  "body-html body-size">
 	<div class = "jumbotron">
 		<div class = "container text-center login-words"> Please Log Into Your Account </div>
+		<!-- Login Form -->
 		<form method = post>
 			<div class = "form-group login-words">
 				<label for = "inputUsername"> Username </label>
@@ -34,10 +36,11 @@
 		</form>
 	</div>
 
+	<!-- Route to Registration Pag -->
 	<div class = "text-center">
 		New To The Site? Register Here! <br><a href="{{url_for('register')}}" class = "btn btn-primary btn-primary-block">Register</a>
 	</div>
-</div>
+	</div>
 </body>
 {% endblock body %}
 

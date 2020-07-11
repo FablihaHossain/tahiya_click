@@ -3,22 +3,24 @@
 {% block title %} <title> Registration Page </title> {% endblock title %}
 
 {% block body %}
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					<ul class = flashes>
-						{% for message in messages %}
-						<div class = "alert alert-danger">
-							<p> {{message}}</p>
-						</div>
-						{% endfor %}
-					</ul>
-					{% endif %}
-				{% endwith %}
+	<!-- Flash Messages -->
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			<ul class = flashes>
+				{% for message in messages %}
+				<div class = "alert alert-danger">
+					<p> {{message}}</p>
+				</div>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endwith %}
 
 <body>
 	<div class =  "body-html body-size">
 	<div class = "jumbotron-register">
 		<div class = "container text-center login-words"> Please Provide The Following</div>
+		<!-- Registration Form -->
 		<form method = post>
 				<div class = "form-group row">
 					<label for ="inputFirstName" class="col-form-label col-sm-2"> First Name </label>
@@ -56,6 +58,7 @@
 		</form>
 	</div>
 
+	<!-- Route to Login Page -->
 	<div class = "text-center">
 		Already Registered? Login Here! <br><a href="{{url_for('login')}}" class = "btn btn-primary btn-primary-block">Login</a>
 	</div>
