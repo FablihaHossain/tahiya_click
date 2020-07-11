@@ -2,71 +2,76 @@
 {% block title %} <title> Home Page </title> {% endblock title %}
 
 {% block body %}		
-		<div class = "body-html body-size">
-			<div class = "row">
-				<div class = "col-md-6">
-					<h3> <u>My Albums</u></h3>
-					{% if not user_albums %}
+	<div class = "body-html body-size">
+		<div class = "row">
+			<div class = "col-md-6">
+				<h3> <u>My Albums</u></h3>
+				<!-- If user have no current albums, they are prompted to create one-->
+				{% if not user_albums %}
 					You Currently Have No Public Albums
 					<br> Add a New One Here:
-						<a href="{{url_for('newAlbum')}}" class="btn btn-primary btn-primary-block">Add New Album</a>
-					{% endif %}
-					{% for album in user_albums %}
+					<a href="{{url_for('newAlbum')}}" class="btn btn-primary btn-primary-block">Add New Album</a>
+				{% endif %}
+
+				<!-- Creating Album Cards for each album belonging to the current user -->
+				{% for album in user_albums %}
 					<div class="card mb-3" style="max-width: 650px;">
 						<div class="row no-gutters">
-						 <div class="col-md-4">
-		    				{% for image in coverImages %}
-		    					{% if image in album.images %}
-		      						<img src="{{image}}" height= "200" width = "400" class="card-img" alt="../static/site_images/no_image.jpg">
-		      					{% endif %}
-		     				{% endfor %}
+							<div class="col-md-4">
+			    				{% for image in coverImages %}
+			    					{% if image in album.images %}
+			      						<img src="{{image}}" height= "200" width = "400" class="card-img" alt="../static/site_images/no_image.jpg">
+			      					{% endif %}
+			     				{% endfor %}
 
-		     				<!-- If no images in album, puts default image-->
-		     				{% if not album.images %}
-		     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
-		     				{% endif %}
-		    			</div>
-		    			<div class = "col-md-8">
+			     				<!-- If no images in album, puts default image-->
+			     				{% if not album.images %}
+			     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
+			     				{% endif %}
+		    				</div>
+		    				<!-- Album Details-->
+		    				<div class = "col-md-8">
 		    				<div class = "card-body">
-		    					<h5 class="card-title">{{album.name}}</h5>
-		        				<p class="card-text">{{album.description}}</p>
+			    				<h5 class="card-title">{{album.name}}</h5>
+			        			<p class="card-text">{{album.description}}</p>
 						        {% for user in users %}
 							        {% if album.owner_id == user.user_id %}
 								        <p class="card-text"><small class="text-muted"> Owner: {{user.firstname}} {{user.lastname}}</small></p>
 							        {% endif %}
 						        {% endfor %}
 		    				</div>
-
+		    				<!-- Buttons For Each Card (Update only belogs to album owners)-->
 		    				<div class = "text-center">
-		      					<a href="{{url_for('viewAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Check It Out!</a>
+			      				<a href="{{url_for('viewAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Check It Out!</a>
 
 		      					{% if album.owner_id == currentUserID %}
-		      					<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
+		      						<a href="{{url_for('updateAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Update Album</a>
 		      					{% endif %}
 		  					</div>
 		    			</div>
+						</div>
 					</div>
+				{% endfor %}
 				</div>
-					{% endfor %}
-				</div>
-				<div class = "col-md-6">
-					<h3> <u> Other Albums </u></h3>
-					{% for album in other_albums %}
-						<div class="card mb-3" style="max-width: 650px;">
-		  					<div class="row no-gutters">
-		    					<div class="col-md-4">
-								    {% for image in coverImages %}
-								    	{% if image in album.images %}
-								      		<img src="{{image}}" height= "200" width = "400" class="card-img" alt="...">
-								      	{% endif %}
-								     {% endfor %}
+			<div class = "col-md-6">
+				<!-- Album Cards that do not belong to the logged in user -->
+				<h3> <u> Other Albums </u></h3>
+				{% for album in other_albums %}
+					<div class="card mb-3" style="max-width: 650px;">
+		  				<div class="row no-gutters">
+		    				<div class="col-md-4">
+							    {% for image in coverImages %}
+							    	{% if image in album.images %}
+							      		<img src="{{image}}" height= "200" width = "400" class="card-img" alt="...">
+							      	{% endif %}
+							    {% endfor %}
 
-								     <!-- If no images in album, puts default image-->
-				     				{% if not album.images %}
-				     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
-				     				{% endif %}
+							    <!-- If no images in album, puts default image-->
+			     				{% if not album.images %}
+			     				<img src="/static/site_images/no_image.jpg" height= "200" width = "400" class="card-img" alt="..">
+			     				{% endif %}
 		    					</div>
-		    			<div class="col-md-8">
+		    				<div class="col-md-8">
 		      				<div class="card-body">
 						        <h5 class="card-title">{{album.name}}</h5>
 						        <p class="card-text">{{album.description}}</p>
@@ -76,16 +81,16 @@
 							        {% endif %}
 						        {% endfor %}
 					    	</div>
-		      
+					    	<!-- Button to view the Album -->
 			      			<div class = "text-center">
 			      				<a href="{{url_for('viewAlbum', albumID = album.album_id)}}" class="btn btn-primary btn-primary-block">Check It Out!</a>
 			  				</div>
-		    			</div>
-		  			</div>
-				</div>
-					{% endfor %}
+		    				</div>
+		  				</div>
+					</div>
+				{% endfor %}
 			</div>
-			</div>
+		</div>
 	</div>
 
 {# Javascript Lines from https://getbootstrap.com/docs/4.3/getting-started/introduction/ #}
