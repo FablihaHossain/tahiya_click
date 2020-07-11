@@ -3,20 +3,23 @@
 
 {% block body %}
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-	<ul class = flashes>
-		{% for message in messages %}
-		<div class = "alert alert-danger">
-			<p> {{message}}</p>
-		</div>
-		{% endfor %}
-	</ul>
-	{% endif %}
-{% endwith %}
+	<!-- Flash Messages-->
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		<ul class = flashes>
+			{% for message in messages %}
+			<div class = "alert alert-danger">
+				<p> {{message}}</p>
+			</div>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	{% endwith %}
 	<div class = "jumbotron">
 		<div class = "container text-center login-words"> Create A New Album Entry Here! </div>
+		<!-- New Album Form -->
 		<form method = post enctype=multipart/form-data>
+			<!-- Album Name -->
 			<div class = "form-group row">
 				<label for = "inputAlbumName" class = "col-form-label col-sm-2 add-album-words"> Album Name </label>
 					<div class = "register-fields col-sm-10">
@@ -24,6 +27,7 @@
 					</div>
 			</div>
 
+			<!-- Album Description -->
 			<div class = "form-group row">
 				<label for = "inputDescription" class = "col-form-label col-sm-2 add-album-words"> Album Description </label>
 					<div class = "register-fields col-sm-10">
@@ -31,12 +35,15 @@
 					</div>
 			</div>
 
+			<!-- Album Images -->
 			<div class = "form-group row">
 				  <label for="files" class = "col-form-label col-sm-2 add-album-words">Select Photos:</label>
 				<div class = "add-image col-sm-10">
   				  	<input type="file" id = "image" name="image" multiple><br><br>
   				</div>
 			</div>
+
+			<!-- Submit Button -->
 			<div class = "text-center">
 				<button type = "submit" class = "btn btn-primary btn-primary-block text-center"> Add Album </button>
 			</div>
