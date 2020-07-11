@@ -8,6 +8,18 @@ from flask import render_template, session, request, flash, redirect, url_for
 from models import Users, Albums
 from database import Database
 
+# Defining Basic route for Welcome Page
+@app.route("/")
+def index():
+	# Getting all users in db
+	users_list = Users.objects.all()
+	return render_template("index.html", users = users_list)
+
+# About Page
+@app.route("/about")
+def about():
+	return render_template("about.html")
+
 # Login Route
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
@@ -35,6 +47,7 @@ def login():
 				flash("Incorrect login. Please Try Again.")
 	return render_template("login.html")
 
+# Logging out clears the session and redirects back to login page
 @app.route("/logout")
 def logout():
 	session.pop('username', None)
@@ -77,18 +90,6 @@ def register():
 				#db = Database.db_connection()
 				return redirect(url_for('albums'))
 	return render_template("register.html")
-
-# Defining Basic route
-@app.route("/")
-def index():
-	# Getting all users in db
-	users_list = Users.objects.all()
-
-	return render_template("index.html", users = users_list)
-
-@app.route("/about")
-def about():
-	return render_template("about.html")
 
 @app.route("/albums")
 def albums():
@@ -146,33 +147,47 @@ def newAlbum():
 	currentAlbumNames = []
 	for album in Albums_list:
 		currentAlbumNames.append(album.name)
-
-
+	# New Album Form
 	if request.method == 'POST':
+		# Getting all form information 
 		album_name = request.form['name']
 		album_description = request.form['description']
 		album_images = request.files.getlist("image")
+
+		# Lists to hold image files and filenames
 		img = []
 		uploaded_files = []
+
+		# Variable to hold album path name for directory
 		path_album_name = album_name
 
+		# Neither name nor description can be empty
 		if "" in [album_name, album_description, album_images]:
 			flash ("Error! One or more fields is empty! Please fill in ALL the fields")
+		# Album names cannot duplicate in the application (For now)
 		elif album_name in currentAlbumNames:
 			flash ("Error! Album Name Already Exists. Please Try Again")
 		else:
+			# Boolean to check the validity of the files uploaded
 			validFiles = True
+
+			# Updating Album Path name if there are spaces in them
 			if " " in album_name:
 				path_album_name = path_album_name.replace(" ", "_")
+
+			# Parsing through the list of all uploaded files
 			for file in album_images:
+				# Checking the file extensions, if allowed then appeneded to lists of images and filenames
 				if allowed_file(file.filename):
 					newFilename = "/static/images/%s/%s" % (path_album_name, file.filename)
 					img.append(newFilename)
 					uploaded_files.append(file)
 				else:
+					# Doesn't submit form if invalid filetype was uploaded
 					flash("Error! Wrong filetype")
 					validFiles = False
 					break
+			# If all files are valid, new directory is created and all images are added to it
 			if validFiles:
 				pathlib.Path(app.config['UPLOAD_FOLDER'], path_album_name).mkdir(exist_ok=True)
 				for file in uploaded_files:
@@ -184,7 +199,6 @@ def newAlbum():
 				# Adding new album
 				Database.insert_album(album_name, album_description, current_user_id, img)
 				flash("Successfully Added Album!")
-
 	return render_template("addAlbum.html")
 
 @app.route("/viewAlbum/<int:albumID>", methods = ['GET', 'POST'])
