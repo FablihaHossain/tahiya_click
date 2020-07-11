@@ -8,7 +8,7 @@ The simple welcome page features my Sony a6000 Professional Camera. This is the 
 ![Scheme](application/static/site_images/Welcome_Page.png)
 
 **About Page:** 
-The About Page features a little description of the application as well as images of myself and my cousin holding professional cameras. Therby, it emphasizes that the site is mostly utilized by the person behind the camera. 
+The About Page features a little description of the application as well as images of myself and my cousin holding professional cameras. Thereby, it emphasizes that the site is mostly utilized by the person behind the camera. 
 ![Scheme](application/static/site_images/About_Page.png)
 
 **Login Page:** 
