@@ -1,3 +1,4 @@
+<img src = "/application/static/site_images/tahiyaClickLogo.png" width = "150" height = "150"></img> 
 # Tahiya Click: A Photography Site
 ## Developed by Fabliha Hossain
 
