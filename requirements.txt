@@ -1,6 +1,6 @@
 cffi==1.14.0
 Click==7.0
-cryptography==2.8
+cryptography==3.3.2
 Flask==1.0.2
 Flask-Hashing==1.1
 flask-mongoengine==0.9.5
